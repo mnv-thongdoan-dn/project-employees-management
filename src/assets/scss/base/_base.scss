@@ -1,0 +1,149 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: $font-body;
+  font-weight: map-get($font-weight, normal);
+  font-size: $font-size-base;
+  letter-spacing: -0.025em;
+}
+p {
+  line-height: 1.45;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+a {
+  color: map-get($colors, txt-black);
+  text-decoration: none;
+}
+img {
+  max-width: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: map-get($font-weight, medium);
+}
+h1 {
+  font-size: map-get($h-font-size, h1);
+}
+h2 {
+  font-size: map-get($h-font-size, h2);
+}
+h3 {
+  font-size: map-get($h-font-size, h3);
+}
+h4 {
+  font-size: map-get($h-font-size, h4);
+}
+h5 {
+  font-size: map-get($h-font-size, h5);
+}
+h6 {
+  font-size: map-get($h-font-size, h6);
+}
+
+// .col-1 {
+//   width: 8.33%;
+// }
+// .col-2 {
+//   width: 16.66%;
+// }
+// .col-3 {
+//   width: 25%;
+// }
+// .col-4 {
+//   width: 33.33%;
+// }
+// .col-5 {
+//   width: 41.66%;
+// }
+// .col-6 {
+//   width: 50%;
+// }
+// .col-7 {
+//   width: 58.33%;
+// }
+// .col-8 {
+//   width: 66.66%;
+// }
+// .col-9 {
+//   width: 75%;
+// }
+// .col-10 {
+//   width: 83.33%;
+// }
+// .col-11 {
+//   width: 91.66%;
+// }
+// .col-12 {
+//   width: 100%;
+// }
+
+/* button */
+
+// .btn {
+//   padding: 15px 30px;
+//   border-radius: 6px;
+//   color: white;
+//   font-size: 18px;
+// }
+
+// .btn-primary {
+//   background-color: #00a79d;
+// }
+
+// .btn-primary:hover {
+//   background-color: #5466f9;
+// }
+
+// .btn-secondary {
+//   background-color: #5466f9;
+// }
+
+// .btn-secondary:hover {
+//   background-color: #00a79d;
+// }
+
+// .btn-primary:hover,
+// .btn-secondary:hover {
+//   transition: all 0.5s ease-in-out;
+// }
+/* input */
+
+// .input {
+//   padding: 18px;
+//   margin-right: -3px;
+//   border-radius: 4px;
+//   border: none;
+// }
+
+// .input:focus {
+//   outline: none;
+// }
+
+// .input:focus::placeholder {
+//   opacity: 0;
+//   transition: all 0.5s ease-in-out;
+// }
+
+/* section title */
+
+// .title-h2 {
+//   font-size: 35px;
+//   color: black;
+//   text-align: center;
+// }
+
+// .sub-title-h2 {
+//   font-size: 18px;
+//   color: rgba(0, 0, 0, 0.529);
+//   text-align: center;
+//   padding: 20px 200px;
+// }
