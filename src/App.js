@@ -3,7 +3,7 @@ import './assets/scss/styles.scss';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./core/guards/PrivateRoute";
  
-const Home = React.lazy(() => import('./pages/Home'));
+const Login = React.lazy(() => import('./pages/Login'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="/" element={<Home/>}/>
+          <Route exact path="/" element={<Login/>}/>
           <Route path="/dashboard" 
             element={
               <PrivateRoute>

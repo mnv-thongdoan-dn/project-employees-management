@@ -1,13 +1,13 @@
 .btn {
-  @include pxRem(padding, 17 30);
+  @include pxRem(padding, 8 16);
   @include pxRem(border-radius, 8);
-  @include pxRem(font-size, 15);
-  // @include pxRem(height, 40);
+  @include pxRem(font-size, 18);
+  @include pxRem(height, 40);
   background: map-get($colors, primary);
   color: map-get($colors, white);
   line-height: 1;
   cursor: pointer;
-  transition: all 0.5s ease-in-out;
+  transition: background 400ms ease;
   border: 0;
   display: inline-flex;
   align-items: center;
@@ -24,11 +24,5 @@
     color: map-get($colors, txt-disabled);
     border-color: map-get($colors, txt-disabled);
     background: map-get($colors, bg-gray-light);
-  }
-}
-
-@include respond-below(small) {
-  .btn {
-    @include pxRem(padding, 15 25);
   }
 }

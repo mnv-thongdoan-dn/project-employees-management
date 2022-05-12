@@ -1,3 +1,215 @@
-// .page-home {
-//   // Specific style for Home page
-// }
+.page-home {
+  background-image: url('../../images/banner-home.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-wrapper {
+    @include pxRem(margin, 0 40px);
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 12px;
+
+    .banner-login {
+      display: none;
+    }
+
+    .contents {
+      @include pxRem(padding, 20px 0px);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: map-get($colors, black);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .page-title, .form-title, form {
+        width: 85%;
+      }
+
+      .page-title, .form-title {
+        font-weight: map-get($font-weight, bold);
+        text-align: center;
+      }
+
+      .page-title {
+        font-size: $font-size-lg;
+        color: #3b4cd3;
+        word-wrap: break-word;
+      }
+
+      .form-title {
+        @include pxRem(margin, 20px 0px 10px);
+        font-size: $font-size-md;
+        color: map-get($colors, secondary);
+      }
+
+      form {
+
+        label, input, .ant-form-item-explain-error {
+          font-size: $font-size-sm;
+        }
+
+        label {
+          color: map-get($colors, txt-black);
+          font-weight: map-get($font-weight, bold);
+        }
+
+        input {
+          border-radius: 0px;
+        }
+
+        button {
+          width: 100%;
+          border-radius: 0px;
+          font-size: $font-size-md;
+        }
+      }
+    }
+  }
+}
+
+@include respond-above(x-small) {
+  .page-home  {
+    &-wrapper {
+      .contents {
+
+        .page-title, .form-title, form {
+          width: 75%;
+        }
+
+        .page-title {
+          font-size: map-get($h-font-size, h3);
+        }
+
+        .form-title {
+          font-size: map-get($h-font-size, h4);
+        }
+
+        form {
+
+          label, input, .ant-form-item-explain-error {
+            font-size: $font-size-md;
+          }
+  
+          button {
+            width: 100%;
+            border-radius: 0px;
+            font-size: $font-size-lg;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include respond-above(small) {
+  .page-home  {
+    &-wrapper {
+      @include pxRem(margin, 0 80px);
+      .contents {
+        .page-title, .form-title, form {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@include respond-above(medium) {
+  .page-home  {
+    &-wrapper {
+      .contents {
+        @include pxRem(padding, 50px 0px);
+        .page-title {
+          font-size: map-get($h-font-size, h2);
+        }
+
+        .form-title {
+          font-size: map-get($h-font-size, h3);
+        }
+      }
+    }
+  }
+}
+
+@include respond-above(wide) {
+  .page-home  {
+    &-wrapper {
+      .banner-login {
+        display: block;
+      }
+
+      .banner-login, .contents {
+        @include pxRem(height, 500px);
+      }
+
+      .banner-login img {
+        border-radius: 12px 0px 0px 12px;
+        height: 100%;
+      }
+
+      .contents {
+        @include pxRem(padding, 0px);
+
+        .page-title, .form-title, form {
+          width: 80%;
+        }
+
+        .page-title {
+          font-size: map-get($h-font-size, h3);
+        }
+
+        .form-title {
+          font-size: map-get($h-font-size, h4);
+        }
+
+        // form {
+        //   label, input {
+        //     @include pxRem(font-size, 20px);
+        //   }
+
+        //   .ant-form-item-explain-error {
+        //     @include pxRem(font-size, 18px);
+        //   }
+        // }
+      }
+    }
+  }
+}
+
+@include respond-above(large) {
+  .page-home  {
+    &-wrapper {
+      .banner-login img, .contents {
+        @include pxRem(height, 600px);
+      }
+
+      .contents {
+        .page-title {
+          font-size: map-get($h-font-size, h1);
+        }
+
+        .form-title {
+          @include pxRem(padding, 20px 0 10px);
+          font-size: map-get($h-font-size, h2);
+        }
+
+        form {
+          label, input, button {
+            @include pxRem(font-size, 20px);
+          }
+
+          .ant-form-item-explain-error {
+            @include pxRem(font-size, 18px);
+          }
+        }
+      }
+    }
+  }
+}
