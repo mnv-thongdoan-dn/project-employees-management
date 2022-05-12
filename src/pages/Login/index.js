@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import BannerLogin from '../../assets/images/banner-login.jpg';
+import BannerLogin from '../../assets/images/banner-signin.jpg';
 
 const Login = () => {
 

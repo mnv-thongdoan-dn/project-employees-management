@@ -5,6 +5,7 @@ import PrivateRoute from "./core/guards/PrivateRoute";
  
 const Login = React.lazy(() => import('./pages/Login'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const Notfount = React.lazy(() => import('./pages/404'));
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               </PrivateRoute>
             } 
           />
+          <Route path="*" element={<Notfount/>}/>
         </Routes>
       </Suspense>
     </BrowserRouter>
