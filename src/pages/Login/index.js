@@ -1,12 +1,17 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import BannerLogin from '../../assets/images/banner-signin.jpg';
+import { authSelector } from '../../store/selectors';
+import useAuth from '../../hooks/Auth';
 
 const Login = () => {
+  const { login } = useAuth()
+  const {isLoading} = useSelector(authSelector);
 
   const onFinish = (values) => {
-    console.log('Success:', values);
+    login(values);
   };
   
   return (
@@ -29,8 +34,8 @@ const Login = () => {
             autoComplete="off"
           >
             <Form.Item
-              label="Username"
-              name="username"
+              label="UserName"
+              name="userName"
               hasFeedback={true}
               rules={[
                 {
@@ -58,7 +63,7 @@ const Login = () => {
                   message: 'Please input your password!',
                 },
                 { whitespace: true},
-                { min: 6 },
+                { min: 4 },
                 { max: 10 }
               ]}
             >
@@ -80,7 +85,7 @@ const Login = () => {
             <Form.Item
               wrapperCol={{ span: 24 }}
             >
-              <Button className='btn' type="primary" htmlType="submit">
+              <Button loading={isLoading} className='btn' type="primary" htmlType="submit">
                 Submit
               </Button>
             </Form.Item>

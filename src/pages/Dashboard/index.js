@@ -1,11 +1,19 @@
 import React, {useState} from 'react';
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { Chart, Employees, CreateEmployee, EditEmployee } from '../../components/Lazy';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 import BreadcrumbDashboard from '../../components/Breadcrumb';
-import { MenuUnfoldOutlined, MenuFoldOutlined, AreaChartOutlined, UserAddOutlined, LogoutOutlined } from '@ant-design/icons';
+import useAuth from '../../hooks/Auth';
+import { 
+  MenuUnfoldOutlined, 
+  MenuFoldOutlined, 
+  AreaChartOutlined, 
+  UserAddOutlined, 
+  LogoutOutlined 
+} from '@ant-design/icons';
 
 const Dashboard = () => {
+  const { logout } = useAuth();
   const [ collapsed, setCollapsed ] = useState(false);
   const { Header, Content, Sider, Footer } = Layout;
   const location = useLocation();
@@ -38,7 +46,7 @@ const Dashboard = () => {
       <Layout>
         <Header>
           <div className='trigger' onClick={toggle}>{collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}</div>
-          <Link className='btn btn-logout' to='/'>Logout <LogoutOutlined /></Link>
+          <Button className='btn btn-logout' onClick={() => logout()}>Logout <LogoutOutlined /></Button>
         </Header>
         <BreadcrumbDashboard/>
         <Content

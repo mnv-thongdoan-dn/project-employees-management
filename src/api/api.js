@@ -1,7 +1,7 @@
 import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 
-import { getTokens } from "../helpers/auth/auth.helpers";
+// import { getTokens } from "../helpers/auth/auth.helpers";
 
 /**
  * All the endpoint that do not require an access token
@@ -12,13 +12,13 @@ import { getTokens } from "../helpers/auth/auth.helpers";
  * "Wrapper" around getTokens
  * can be changed to have refresh functionality if api supports it
  */
-export const getRefreshedToken = () => {
-  const { accessToken, expiresAt } = getTokens();
+// export const getRefreshedToken = () => {
+//   const { accessToken, expiresAt } = getTokens();
 
-  const isTokenExpired = moment().isSameOrAfter(expiresAt);
+//   const isTokenExpired = moment().isSameOrAfter(expiresAt);
 
-  return { accessToken, isTokenExpired };
-};
+//   return { accessToken, isTokenExpired };
+// };
 
 /**
  * Adds authorization headers to API calls
@@ -29,18 +29,18 @@ const authInterceptor = async (request) => {
   //   request.url?.startsWith(endpoint)
   // );
 
-  const { accessToken } = getRefreshedToken();
+  // const { accessToken } = getRefreshedToken();
 
-  if (accessToken) {
-    request.headers.Authorization = `${accessToken}`;
-    return request;
-  }
+  // if (accessToken) {
+  //   request.headers.Authorization = `${accessToken}`;
+  //   return request;
+  // }
 
-  if (!accessToken) {
+  // if (!accessToken) {
     // TODO: handle when UNAUTHORIZED;
     // return Promise.reject(ApiStatusCodes.UNAUTHORIZED);
-    return request;
-  }
+  //   return request;
+  // }
 
   return request;
 };
