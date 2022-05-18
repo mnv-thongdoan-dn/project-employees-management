@@ -19,7 +19,7 @@ const Login = () => {
           <p className='page-title'>Monstar-lab Employees Management</p>
           <h2 className='form-title'>Sign In</h2>
           <Form
-            name="basic"
+            name="login-form"
             labelCol={{ span: 24}}
             wrapperCol={{ span: 24 }}
             initialValues={{

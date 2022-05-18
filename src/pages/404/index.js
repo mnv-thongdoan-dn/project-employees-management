@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Notfount = () => {
+const NotFount = () => {
   return (
     <div className='page-404'></div>
   )
 }
 
-export default Notfount;
+export default NotFount;

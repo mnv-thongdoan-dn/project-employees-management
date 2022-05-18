@@ -1,0 +1,62 @@
+.page-dashboard {
+  .ant-layout-sider{
+    background-color: map-get($colors, bg-blue);
+
+    .ant-layout-sider-children {
+      .logo {
+        height: 32px;
+        margin: 16px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+
+  .ant-layout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:  map-get($colors, bg-blue);
+
+    .trigger {
+      display: inline-block;
+      height: inherit;
+
+      span {
+        height: inherit;
+
+        svg {
+          @include pxRem (font-size, 24px);
+          color: map-get($colors, white );
+          height: inherit;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .btn-logout {
+      @include pxRem(font-size, 14px);
+      @include pxRem(border-radius, 6px);
+
+      span {
+        @include pxRem(margin-left, 10px);
+      }
+
+      &:hover {
+        color: map-get($colors, primary);
+        background-color: map-get($colors, white);
+      }
+    }
+  }
+
+  .ant-breadcrumb {
+    @include pxRem(margin, 24px 16px);
+    @include pxRem(font-size, 18px);
+  }
+
+  .ant-layout-content {
+    @include pxRem(margin, 0px 16px);
+    @include pxRem(padding, 24px);
+    @include pxRem(min-height, 280px);
+    background-color: map-get($colors, white );
+  }
+}

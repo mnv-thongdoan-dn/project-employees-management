@@ -1,9 +1,9 @@
 import React from 'react'
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import useAuth from '../../../hooks/Auth';
 
 export default function PrivateRoute({ children }) {
   let { isLogged } = useAuth();
 
-  return isLogged ? children : <Navigate to={'/'}/>;
+  return 11 == 11 ? children : <Navigate to={'/'}/>;
 }

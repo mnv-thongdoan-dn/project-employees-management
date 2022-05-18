@@ -1,6 +1,6 @@
 .btn {
   @include pxRem(padding, 8 16);
-  @include pxRem(border-radius, 8);
+  // @include pxRem(border-radius, 8);
   @include pxRem(font-size, 18);
   @include pxRem(height, 40);
   background: map-get($colors, primary);
@@ -25,4 +25,58 @@
     border-color: map-get($colors, txt-disabled);
     background: map-get($colors, bg-gray-light);
   }
+}
+
+.btn-primary {
+  &:hover {
+    border: 1px solid map-get($colors, primary-dark);
+  }
+}
+
+.btn-secondary {
+  @include pxRem(margin-right, 10px);
+  background-color: map-get($colors,  bg-gray );
+  color: map-get($colors, txt-black);
+  border: 1px solid map-get($colors, border-gray);
+
+  &:hover {
+    background-color: map-get($colors,  white);
+    color: map-get($colors,  secondary );
+    border: 1px solid map-get($colors, secondary);
+  }
+}
+
+.btn-secondary, .btn-delete, .btn-edit {
+  @include pxRem(width, 70px);
+}
+
+.btn-delete, .btn-edit {
+  color: map-get($colors, white);
+}
+
+.btn-delete {
+  background-color: map-get($colors,  brand-html);
+
+  &:hover {
+    color: map-get($colors, brand-html);
+    background-color: map-get($colors,  white);
+    border: 1px solid map-get($colors,  brand-html);
+  }
+}
+
+.btn-edit {
+  @include pxRem(margin-right, 10px);
+  background-color: map-get($colors,  brand-css );
+
+  &:hover {
+    color: map-get($colors, brand-css);
+    background-color: map-get($colors,  white);
+    border: 1px solid map-get($colors,  brand-css);
+  }
+}
+
+.group-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
