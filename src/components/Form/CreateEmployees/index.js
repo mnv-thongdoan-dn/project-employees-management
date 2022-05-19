@@ -76,9 +76,7 @@ const CreateEmployees = () => {
       const result = await dispatch(EmployeesCreateThunk(values));
       if(result.meta.requestStatus === "fulfilled") {
         Notification('success', "Employees Message", "Create Employees Success!")
-        setTimeout(() => {
-          navigate("/dashboard/employees");
-        }, [2000])
+        navigate("/dashboard/employees");
       }
     }
     addEmployees();
@@ -247,6 +245,7 @@ const CreateEmployees = () => {
         <Form.Item
           name="phoneNumber"
           label="Phone Number"
+          hasFeedback={true}
           rules={[
             { required: true, message: 'Please input phone number!' },
             { min: 10 },

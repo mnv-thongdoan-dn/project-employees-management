@@ -1,7 +1,12 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { apiEmployeesGetList, apiEmployeesCreate } from '../../../api/employees/employees.api';
+import { createSlice, createAsyncThunk, unwrapResult } from '@reduxjs/toolkit';
+import { 
+  apiEmployeesGetList, 
+  apiEmployeesCreate, 
+  apiEmployeesDelete 
+} from '../../../api/employees/employees.api';
 
 export const EmployeesGetListThunk = createAsyncThunk("employees/getAll", async (params, thunkApi) => {
+  console.log("params-thunk-getall", params);
   try {
     const res = await apiEmployeesGetList();
     if(res.status === 200) {
@@ -21,6 +26,20 @@ export const EmployeesCreateThunk = createAsyncThunk("employees/create", async (
   } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
+});
+
+export const EmployeesDeleteThunk = createAsyncThunk("employees/delete", async (params, thunkApi) => {
+  try {
+    const res = await apiEmployeesDelete(params);
+    if(res.status === 200) {
+      thunkApi.dispatch(EmployeesGetListThunk(123))
+      // const result = await thunkApi.dispatch(EmployeesGetListThunk());
+      // console.log("result-thunk",unwrapResult(result));
+      // return unwrapResult(result);
+    }
+  } catch (error) {
+    return thunkApi.rejectWithValue(error);
+  }
 }) ;
 
 export const EmployeesSlice = createSlice({
@@ -28,7 +47,7 @@ export const EmployeesSlice = createSlice({
   initialState: {
     isLoading: false,
     employees: [],
-    error: null
+    error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -40,6 +59,7 @@ export const EmployeesSlice = createSlice({
 
     .addCase(EmployeesGetListThunk.fulfilled, (state, action) => {
       state.isLoading = false;
+      console.log(" action.payload employees", action.payload)
       state.employees = action.payload;
     })
 
@@ -59,6 +79,21 @@ export const EmployeesSlice = createSlice({
     })
 
     .addCase(EmployeesCreateThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error
+    })
+
+    //  delete
+    .addCase(EmployeesDeleteThunk.pending, (state) => {
+      state.isLoading = true;
+    })
+
+    .addCase(EmployeesDeleteThunk.fulfilled, (state, action) => {
+      state.isLoading = false;
+      // state.employees = action.payload;
+    })
+
+    .addCase(EmployeesDeleteThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error
     })

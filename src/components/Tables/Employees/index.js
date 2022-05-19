@@ -1,32 +1,52 @@
 import React, {  useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Button, Tag } from 'antd';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-import { EmployeesGetListThunk } from '../../../store/slices/employeesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { EmployeesGetListThunk, EmployeesDeleteThunk } from '../../../store/slices/employeesSlice';
+import Confirm from '../../common/Modal/Confirm';
+import Notification from '../../common/Notification';
+import { employeesSelector } from '../../../store/selectors';
 
 
 const TableEmployees = () => {
 
   const dispatch = useDispatch();
-  const [ dataEmployees, setDataEmployees ] = useState([]);
+  const { isLoading, employees } = useSelector(employeesSelector);
+  const [ onConfirm, setOnConfirm ] = useState(false);
+  const [ employeeSelected, setEmployeeSelected ] = useState('');
+  const [ contentConfirm, setContentConfirm ] = useState('');
+
   const [windowSize, setWindowSize] = useState(() => {
     const { innerWidth: width} = window;
     return width;
   });
 
-  const formatData = (datas) => {
-    const dataSort = [...datas].sort((a, b) => b.updatedAt - a.updatedAt);
-    const dataAddKey = dataSort.map((item, index) => ({...item, key: item.id, index: index + 1}));
-    setDataEmployees(dataAddKey)
+  const dataSort = [...employees].sort((a, b) => b.updatedAt - a.updatedAt);
+  const formatData = dataSort.length > 0 ? dataSort.map((item, index) => ({...item, key: item.id, index: index + 1})) : [];
+
+  const handleDelete = (employee) => {
+    setEmployeeSelected(employee.id);
+    setContentConfirm(`Are you sure you want to delete the employee ${employee.name} ?`);
+    setOnConfirm(!onConfirm);
+  };
+
+  const handleOk = () => {
+    const deleteEmployee = async () => {
+      const result = await dispatch(EmployeesDeleteThunk(employeeSelected))
+      if(result.meta.requestStatus === "fulfilled") {
+        Notification('success', "employee message", "Delete employee success !")
+      }
+    }
+    deleteEmployee();
+    setOnConfirm(!onConfirm);
+  }
+
+  const handleCancel = () => {
+    setOnConfirm(!onConfirm);
   }
 
   useEffect(() => {
-    const employeesGetList = async () => {
-      const result = await dispatch(EmployeesGetListThunk());
-      formatData(unwrapResult(result))
-    }
-    employeesGetList()
+    dispatch(EmployeesGetListThunk());
   }, [])
 
   const columns = [
@@ -132,32 +152,28 @@ const TableEmployees = () => {
       render: (record) => (
         <div className='group-btn'>
           <Link to='edit' className='btn btn-edit'>Edit</Link>
-          <Button className='btn btn-delete'>Delete</Button>
+          <Button onClick={() => handleDelete(record)} className='btn btn-delete'>Delete</Button>
         </div>
       )
     },
   ];
 
-  // address: "Hai Phong"
-  // age: 31
-  // avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-  // createdAt: 1652844918454
-  // cv: "https://www.topcv.vn/xem-cv/BAUJA1wKAgEAAFRSAlBQAAJWBAsCBFQOBwdSBQ50af"
-  // email: "duongvanminh@gmail.com"
-  // frameWork: ['Ruby On Rails']
-  // gender: "male"
-  // id: 12
-  // index: 11
-  // key: 12
-  // language: "Ruby"
-  // name: "Duong Van Minh"
-  // phoneNumber: "05559998881"
-  // position: "Junior"
-  // updatedAt: 1652844918454
-
-
   return (
-    <Table loading={dataEmployees.length > 0 ? false : true } columns={columns} dataSource={dataEmployees} scroll={{ x: 1500, y: 300 }}/>
+    <>
+      <Confirm 
+        handleOk={handleOk} 
+        handleCancel={handleCancel} 
+        contentConfirm={contentConfirm}
+        title='Confirm Delete Employees'
+        onConfirm={onConfirm}
+      />
+      <Table 
+        loading={isLoading} 
+        columns={columns} 
+        dataSource={formatData} 
+        scroll={{ x: 1500, y: 300 }}
+      />
+    </>
   )
 }
 

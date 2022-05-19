@@ -8,3 +8,7 @@ export const apiEmployeesGetList = () => {
 export const apiEmployeesCreate = (data) => {
   return api.post(ENDPOINTS.employees, data);
 };
+
+export const apiEmployeesDelete = (id) => {
+  return api.delete(`${ENDPOINTS.employees}/${id}`);
+};
