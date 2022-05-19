@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { Chart, Employees, CreateEmployee, EditEmployee } from '../../components/Lazy';
 import { Layout, Menu, Button } from 'antd';
-import BreadcrumbDashboard from '../../components/Breadcrumb';
+import Breadcrumb from '../../components/Breadcrumb';
 import useAuth from '../../hooks/Auth';
 import { 
   MenuUnfoldOutlined, 
@@ -48,7 +48,7 @@ const Dashboard = () => {
           <div className='trigger' onClick={toggle}>{collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}</div>
           <Button className='btn btn-logout' onClick={() => logout()}>Logout <LogoutOutlined /></Button>
         </Header>
-        <BreadcrumbDashboard/>
+        <Breadcrumb/>
         <Content
           >
           <Routes>

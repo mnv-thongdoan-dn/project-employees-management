@@ -1,42 +1,88 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Input, Select, Radio, Button, InputNumber } from 'antd';
-import { FileImageOutlined, UserOutlined, NumberOutlined, MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
+import { 
+  FileImageOutlined, 
+  UserOutlined, 
+  NumberOutlined, 
+  MailOutlined, 
+  PhoneOutlined, 
+  HomeOutlined 
+} from '@ant-design/icons';
+import Notification from '../../common/Notification';
+import { useDispatch, useSelector } from 'react-redux';
+import { employeesSelector } from '../../../store/selectors';
+import { positionsThunk } from '../../../store/slices/positionsSlice';
+import { languagesThunk } from '../../../store/slices/languagesSlice';
+import { frameWorksThunk } from '../../../store/slices/frameworksSlice';
+import { EmployeesCreateThunk } from '../../../store/slices/employeesSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const { Option } = Select;
 
-const positions = [
-  {id: 1, value: "Intern"},
-  {id: 2, value: "Fresher"},
-  {id: 3, value: "Junior"},
-  {id: 4, value: "Senior"},
-  {id: 5, value: "Leader"},
-];
-
-const languages = [
-  {id: 1, value: "Php"},
-  {id: 2, value: "Ruby"},
-  {id: 3, value: "Javascript"},
-  {id: 4, value: "Java"},
-  {id: 5, value: "C++"},
-];
-
-const frameworks = [
-  {id: 1, value: "React"},
-  {id: 2, value: "Vue"},
-  {id: 3, value: "Laravel"},
-  {id: 4, value: "Angular"},
-  {id: 5, value: "C++"},
-];
-
 const CreateEmployees = () => {
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading } = useSelector(employeesSelector);
+  const [ positions, setPositions ] = useState([]);
+  const [ languages, setLanguages ] = useState([]);
+  const [ frameWorks, setFrameWorks ] = useState([]);
+  const [ selectedlanguage, setSelectedLanguage ] = useState(1);
+  const initialValues= {
+    avatar: '',
+    name: '',
+    age: '',
+    gender: 'male',
+    positions: '',
+    language: 'Php',
+    frameWorks: [],
+    email: '',
+    phoneNumber: '',
+    address: '',
+    cv: ''
   };
 
-  // const onChangePhone = (e) => {
-  //   console.log(e.target.value)
-  // }
+  useEffect(() => {
+    const getPositions = async () => {
+      const result = await dispatch(positionsThunk());
+      setPositions(unwrapResult(result));
+    }
+
+    const getlanguages = async () => {
+      const result = await dispatch(languagesThunk());
+      setLanguages(unwrapResult(result));
+    }
+
+    getPositions();
+    getlanguages();
+  }, [])
+
+  useEffect(() => {
+    const getFrameWorks = async () => {
+      const result = await dispatch(frameWorksThunk(selectedlanguage));
+      const dataFrameWorks = unwrapResult(result)[0].values;
+      setFrameWorks(dataFrameWorks)
+    }
+    getFrameWorks();
+  }, [selectedlanguage])
+
+  const handleOnChangeSelect = (value) => {
+    setSelectedLanguage(value);
+  }
+
+  const onFinish = (values) => {
+    const addEmployees = async () => {
+      const result = await dispatch(EmployeesCreateThunk(values));
+      if(result.meta.requestStatus === "fulfilled") {
+        Notification('success', "Employees Message", "Create Employees Success!")
+        setTimeout(() => {
+          navigate("/dashboard/employees");
+        }, [2000])
+      }
+    }
+    addEmployees();
+  };
 
   return (
     <div className='wrapper-form'>
@@ -46,11 +92,7 @@ const CreateEmployees = () => {
         className='create-employee-form'
         labelCol={{ span: 24}}
         wrapperCol={{ span: 24 }}
-        initialValues={{
-          avatar: '',
-          gender: "male",
-          prefixSelector: '86'
-        }}
+        initialValues={initialValues}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -143,6 +185,7 @@ const CreateEmployees = () => {
         >
           <Select
            placeholder="choose a language"
+           onChange={handleOnChangeSelect}
           >
             {
               languages && languages.map((language) => {
@@ -155,8 +198,8 @@ const CreateEmployees = () => {
         </Form.Item>
 
         <Form.Item
-          label="FrameWork"
-          name="frameWork"
+          label="FrameWorks"
+          name="frameWorks"
           hasFeedback={true}
           rules={[
             { required: true, message: 'Please choose a frameWork!' }
@@ -167,10 +210,10 @@ const CreateEmployees = () => {
             style={{ width: '100%' }}
             optionLabelProp="label"
             placeholder="You can choose many framework"
-            // onChange={getValueLanguages}
+
           >
             {
-              frameworks && frameworks.map((item) => {
+              frameWorks && frameWorks.map((item) => {
                 return  (
                   <Option key={item.id} value={item.value} label={item.value}>
                   <div className="demo-option-label-item">
@@ -202,7 +245,7 @@ const CreateEmployees = () => {
         </Form.Item>
 
         <Form.Item
-          name="phone"
+          name="phoneNumber"
           label="Phone Number"
           rules={[
             { required: true, message: 'Please input phone number!' },
@@ -251,10 +294,7 @@ const CreateEmployees = () => {
           wrapperCol={{ span: 24 }}
         >
           <div className='group-btn'>
-            <Button className='btn btn-secondary' htmlType="button">
-              Cancel
-            </Button>
-            <Button className='btn btn-primary' htmlType="submit">
+            <Button loading={isLoading} className='btn btn-primary' htmlType="submit">
               Create
             </Button>
           </div>

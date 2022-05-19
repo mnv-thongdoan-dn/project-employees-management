@@ -28,7 +28,7 @@
 }
 
 .btn-primary {
-  &:hover {
+  &:hover, &:focus, &:active {
     border: 1px solid map-get($colors, primary-dark);
   }
 }
@@ -57,7 +57,7 @@
 .btn-delete {
   background-color: map-get($colors,  brand-html);
 
-  &:hover {
+  &:hover, &:focus, &:active {
     color: map-get($colors, brand-html);
     background-color: map-get($colors,  white);
     border: 1px solid map-get($colors,  brand-html);

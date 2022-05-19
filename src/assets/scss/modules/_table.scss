@@ -19,9 +19,14 @@ table {
     text-align: center;
   }
 
+  .ant-table-thead th.ant-table-column-has-sorters,
   .ant-table-thead>tr> th {
     background-color: map-get($colors, bg-blue);
     color: map-get($colors, white);
+  }
+
+  .ant-table-thead th.ant-table-column-has-sorters:hover {
+    background-color: map-get($colors, bg-blue-light);
   }
 
   .ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan]):before {
