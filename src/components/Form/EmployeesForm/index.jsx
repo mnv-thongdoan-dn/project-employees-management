@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Form, Input, Select, Radio, Button, InputNumber } from 'antd';
 import { 
   FileImageOutlined, 
@@ -9,83 +8,38 @@ import {
   PhoneOutlined, 
   HomeOutlined 
 } from '@ant-design/icons';
-import Notification from '../../common/Notification';
-import { useDispatch, useSelector } from 'react-redux';
-import { 
-  employeesSelector, 
-  positionsSelector, 
-  languagesSelector,
-  frameWorksSelector
-} from '../../../store/selectors';
-import { positionsThunk } from '../../../store/slices/positionsSlice';
-import { languagesThunk } from '../../../store/slices/languagesSlice';
-import { frameWorksThunk } from '../../../store/slices/frameworksSlice';
-import { employeeCreateThunk } from '../../../store/slices/employeesSlice';
 
 const { Option } = Select;
 
-const EmployeesForm = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [form] = Form.useForm()
-
-  const { isLoading, status } = useSelector(employeesSelector);
-  const { positions } = useSelector(positionsSelector);
-  const { languages } = useSelector(languagesSelector);
-  const { frameWorks } = useSelector(frameWorksSelector);
-  const [ selectedlanguage, setSelectedLanguage ] = useState(1);
-
-  const initialValues= {
-    avatar: '',
-    name: '',
-    age: '',
-    gender: 'male',
-    positions: '',
-    language: 'Php',
-    frameWorks: [],
-    email: '',
-    phoneNumber: '',
-    address: '',
-    cv: ''
-  };
-
-  useEffect(() => {
-    dispatch(positionsThunk());
-    dispatch(languagesThunk());
-  }, [])
-
-  useEffect(() => {
-    dispatch(frameWorksThunk(selectedlanguage));
-  }, [selectedlanguage])
-
-  useEffect(() => {
-    if(status === 201) {
-      Notification('success', "Employees Message", "Create Employees Success!")
-      navigate("/dashboard/employees");
-    }
-  }, [status])
-
-  const handleOnChangeSelect = (value) => {
-    setSelectedLanguage(value);
-    form.setFieldsValue({frameWorks: []});
-  }
-
-  const onFinish = (values) => {
-    dispatch(employeeCreateThunk(values));
-  }
+const EmployeesForm = (props) => {
+ const { 
+          form, 
+          name, 
+          className, 
+          labelCol, 
+          wrapperCol, 
+          initialValues, 
+          onFinish,
+          positions,
+          languages,
+          frameWorks,
+          handleOnChangeSelect,
+          isLoading,
+          textBtn,
+          titleForm
+        } = props;
 
   return (
     <div className='wrapper-form'>
-      <h1 className='title-form'>Create Employee Form</h1>
+      <h1 className='title-form'>{titleForm}</h1>
       <Form
         form={form}
-        name="create-form"
-        className='create-employee-form'
-        labelCol={{ span: 24}}
-        wrapperCol={{ span: 24 }}
+        name={name}
+        className={className}
+        labelCol={labelCol}
+        wrapperCol={wrapperCol}
         initialValues={initialValues}
         onFinish={onFinish}
-        autoComplete="off"
       >
         <Form.Item
           label="Avatar"
@@ -93,7 +47,6 @@ const EmployeesForm = () => {
           hasFeedback={true}
           rules={[
             { required: true, message: 'Please input link avatar!' },
-            { max: 300 }
           ]}
         >
           <Input 
@@ -108,8 +61,6 @@ const EmployeesForm = () => {
           hasFeedback={true}
           rules={[
             { required: true, message: 'Please input Full Name!' },
-            { max: 30 },
-            { min: 10 },
           ]}
         >
           <Input 
@@ -257,8 +208,6 @@ const EmployeesForm = () => {
           hasFeedback={true}
           rules={[
             { required: true, message: 'Please input address!' },
-            { min: 10 },
-            { max: 100 }
           ]}
         >
           <Input 
@@ -273,7 +222,6 @@ const EmployeesForm = () => {
           hasFeedback={true}
           rules={[
             { required: true, message: 'Please input your file CV!' },
-            { max: 100 }
           ]}
         >
           <Input 
@@ -286,8 +234,11 @@ const EmployeesForm = () => {
           wrapperCol={{ span: 24 }}
         >
           <div className='group-btn'>
+            <Button className='btn btn-secondary'>
+              Cancel
+            </Button>
             <Button loading={isLoading} className='btn btn-primary' htmlType="submit">
-              Create
+              {textBtn}
             </Button>
           </div>
         </Form.Item>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Table, Button, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { employeesGetListThunk, employeeDeleteThunk } from '../../../store/slices/employeesSlice';
+import { EditOutlined, DeleteOutlined, FundViewOutlined } from '@ant-design/icons';
 import Confirm from '../../common/Modal/Confirm';
 import Notification from '../../common/Notification';
 import { employeesSelector } from '../../../store/selectors';
@@ -20,7 +21,9 @@ const TableEmployees = () => {
   });
 
   const dataSort = [...employees].sort((a, b) => b.updatedAt - a.updatedAt);
-  const formatData = dataSort.length > 0 ? dataSort.map((item, index) => ({...item, key: item.id, index: index + 1})) : [];
+  const formatData = dataSort.length > 0 ? dataSort.map((item, index) => {
+        return  {...item, key: item.id, index: index + 1};
+       }) : [];
 
   const handleDelete = (employee) => {
     setEmployeeSelected(employee.id);
@@ -45,7 +48,7 @@ const TableEmployees = () => {
 
   useEffect(() => {
     dispatch(employeesGetListThunk());
-  }, [])
+  }, []);
 
   const columns = [
     {
@@ -92,7 +95,36 @@ const TableEmployees = () => {
       title: 'Language',
       dataIndex: 'language',
       key: 'language',
-      width: 150
+      width: 150,
+      render: (value) => {
+        if(typeof(value) === "number") { 
+          switch (value) {
+            case 1:
+              return "Php"
+              break;
+
+            case 2:
+              return "Ruby"
+              break;
+
+            case 3:
+              return "Javascript"
+              break;
+
+            case 4:
+              return "Java"
+              break;
+
+            case 5:
+              return "Python"
+              break;
+
+            default:
+              break;
+          }
+        }
+        return value;
+      }
     },
     {
       title: 'FrameWorks',
@@ -139,7 +171,7 @@ const TableEmployees = () => {
       key: 'cv',
       width: 150,
       render: (record) => (
-        <a href={record} target="_blank" className='btn btn-secondary'>View CV</a>
+        <a href={record} target="_blank" className='btn btn-viewcv'><FundViewOutlined/></a>
       )
     },
     {
@@ -149,8 +181,8 @@ const TableEmployees = () => {
       width: 200,
       render: (record) => (
         <div className='group-btn'>
-          <Link to={`edit/${record.id}`} className='btn btn-edit'>Edit</Link>
-          <Button onClick={() => handleDelete(record)} className='btn btn-delete'>Delete</Button>
+          <Link to={`edit/${record.id}`} className='btn btn-edit'><EditOutlined/></Link>
+          <Button onClick={() => handleDelete(record)} className='btn btn-delete'><DeleteOutlined/></Button>
         </div>
       )
     },

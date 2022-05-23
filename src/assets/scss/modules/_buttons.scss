@@ -32,6 +32,8 @@
   border: 1px solid;
 }
 
+
+// button primary
 .btn.btn-primary {
   background-color: map-get($colors, secondary);
   border: 1px solid map-get($colors, secondary);
@@ -44,47 +46,52 @@
   }
 }
 
-// .btn-secondary {
-//   @include pxRem(margin-right, 10px);
-//   background-color: map-get($colors,  bg-gray );
-//   color: map-get($colors, txt-black);
-//   border: 1px solid map-get($colors, border-gray);
+// button table
+.btn-viewcv {
+  background-color: map-get($colors,  bg-gray );
+  color: map-get($colors, txt-black);
+  border: 1px solid map-get($colors, border-gray);
 
-//   &:hover {
-//     background-color: map-get($colors,  white);
-//     color: map-get($colors,  secondary );
-//     border: 1px solid map-get($colors, secondary);
-//   }
-// }
+  &:hover {
+    background-color: map-get($colors,  white);
+    color: map-get($colors,  secondary );
+    border: 1px solid map-get($colors, secondary);
+  }
+}
 
-// .btn-secondary, .btn-delete, .btn-edit {
-//   @include pxRem(width, 70px);
-// }
+.btn-viewcv, .btn-delete, .btn-edit {
+  @include pxRem(width, 70px);
+  transition: all .5s ease-in-out;
 
-// .btn-delete, .btn-edit {
-//   color: map-get($colors, white);
-// }
+  svg {
+    @include pxRem(font-size, 20px);
+  }
+}
 
-// .btn-delete {
-//   background-color: map-get($colors,  brand-html);
+.btn-viewcv .btn-delete, .btn-edit {
+  color: map-get($colors, white);
+}
 
-//   &:hover, &:focus, &:active {
-//     color: map-get($colors, brand-html);
-//     background-color: map-get($colors,  white);
-//     border: 1px solid map-get($colors,  brand-html);
-//   }
-// }
+.btn-delete {
+  background-color: map-get($colors,  brand-html);
+  border: 1px solid map-get($colors,  brand-html);
 
-// .btn-edit {
-//   @include pxRem(margin-right, 10px);
-//   background-color: map-get($colors,  brand-css );
+  &:hover, &:focus, &:active {
+    color: map-get($colors, brand-html);
+    background-color: map-get($colors,  white);
+  }
+}
 
-//   &:hover {
-//     color: map-get($colors, brand-css);
-//     background-color: map-get($colors,  white);
-//     border: 1px solid map-get($colors,  brand-css);
-//   }
-// }
+.btn-edit {
+  @include pxRem(margin-right, 10px);
+  background-color: map-get($colors,  brand-css );
+  border: 1px solid map-get($colors,  brand-css);
+
+  &:hover {
+    color: map-get($colors, brand-css);
+    background-color: map-get($colors,  white);
+  }
+}
 
 // btn create
 .btn-create {
@@ -124,8 +131,13 @@
   }
 }
 
+// group-btn
 .group-btn {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+
+  .ant-btn:first-child {
+    @include pxRem(margin-right, 10px);
+  }
 }

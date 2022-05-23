@@ -1,22 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { UserAddOutlined } from '@ant-design/icons';
-import TableEmployees from '../../../../components/Tables/Employees';
-import SearchEmployees from '../../../../components/Form/SearchEmployees';
+import { Routes, Route } from "react-router-dom";
+import { Employees, CreateEmployee, EditEmployee } from '../../../../components/Lazy';
 
-const Employeees = () => {
+const EmployeesRouter = () => {
   return (
-    <div className='page-employees'>
-      <SearchEmployees/>
-      <div className='btn btn-create'>
-        <Link to="create">
-          <span className='text'>Create Employee</span>
-          <UserAddOutlined />
-        </Link>
-      </div>
-      <TableEmployees/>
-    </div>
+    <Routes>
+      <Route path='/' element={<Employees/>}/>
+      <Route path='create' element={<CreateEmployee/>}/>
+      <Route path='edit/:id' element={<EditEmployee/>}/>
+    </Routes>
   )
 }
 
-export default Employeees;
+export default EmployeesRouter;

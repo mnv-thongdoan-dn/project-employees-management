@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import { Chart, Employees, CreateEmployee, EditEmployee } from '../../components/Lazy';
+import { Chart, EmployeesRouter } from '../../components/Lazy';
 import { Layout, Menu } from 'antd';
 import Breadcrumb from '../../components/Breadcrumb';
 import useAuth from '../../hooks/Auth';
@@ -57,13 +57,11 @@ const Dashboard = () => {
               <LogoutOutlined />
             </div>
           </Header>
-          {/* <Breadcrumb/> */}
+          <Breadcrumb/>
           <Content>
             <Routes>
-              <Route path='/' element={<Chart/>} />
-              <Route path='employees' element={<Employees/>}/>
-              <Route path='employees/create' element={<CreateEmployee/>}/>
-              <Route path='employees/edit/:id' element={<EditEmployee/>}/>
+              <Route path='/' element={<Chart/>}/>
+              <Route path='employees/*' element={<EmployeesRouter/>}/>
             </Routes>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Thong Doan Design ©2022 Created by Ant UED</Footer>
