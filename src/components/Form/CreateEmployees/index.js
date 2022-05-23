@@ -11,24 +11,30 @@ import {
 } from '@ant-design/icons';
 import Notification from '../../common/Notification';
 import { useDispatch, useSelector } from 'react-redux';
-import { employeesSelector } from '../../../store/selectors';
+import { 
+  employeesSelector, 
+  positionsSelector, 
+  languagesSelector,
+  frameWorksSelector
+} from '../../../store/selectors';
 import { positionsThunk } from '../../../store/slices/positionsSlice';
 import { languagesThunk } from '../../../store/slices/languagesSlice';
 import { frameWorksThunk } from '../../../store/slices/frameworksSlice';
-import { EmployeesCreateThunk } from '../../../store/slices/employeesSlice';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { employeeCreateThunk } from '../../../store/slices/employeesSlice';
 
 const { Option } = Select;
 
 const CreateEmployees = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading } = useSelector(employeesSelector);
-  const [ positions, setPositions ] = useState([]);
-  const [ languages, setLanguages ] = useState([]);
-  const [ frameWorks, setFrameWorks ] = useState([]);
+  const [form] = Form.useForm()
+
+  const { isLoading, status } = useSelector(employeesSelector);
+  const { positions } = useSelector(positionsSelector);
+  const { languages } = useSelector(languagesSelector);
+  const { frameWorks } = useSelector(frameWorksSelector);
   const [ selectedlanguage, setSelectedLanguage ] = useState(1);
+
   const initialValues= {
     avatar: '',
     name: '',
@@ -44,48 +50,35 @@ const CreateEmployees = () => {
   };
 
   useEffect(() => {
-    const getPositions = async () => {
-      const result = await dispatch(positionsThunk());
-      setPositions(unwrapResult(result));
-    }
-
-    const getlanguages = async () => {
-      const result = await dispatch(languagesThunk());
-      setLanguages(unwrapResult(result));
-    }
-
-    getPositions();
-    getlanguages();
+    dispatch(positionsThunk());
+    dispatch(languagesThunk());
   }, [])
 
   useEffect(() => {
-    const getFrameWorks = async () => {
-      const result = await dispatch(frameWorksThunk(selectedlanguage));
-      const dataFrameWorks = unwrapResult(result)[0].values;
-      setFrameWorks(dataFrameWorks)
-    }
-    getFrameWorks();
+    dispatch(frameWorksThunk(selectedlanguage));
   }, [selectedlanguage])
+
+  useEffect(() => {
+    if(status === 201) {
+      Notification('success', "Employees Message", "Create Employees Success!")
+      navigate("/dashboard/employees");
+    }
+  }, [status])
 
   const handleOnChangeSelect = (value) => {
     setSelectedLanguage(value);
+    form.setFieldsValue({frameWorks: []});
   }
 
   const onFinish = (values) => {
-    const addEmployees = async () => {
-      const result = await dispatch(EmployeesCreateThunk(values));
-      if(result.meta.requestStatus === "fulfilled") {
-        Notification('success', "Employees Message", "Create Employees Success!")
-        navigate("/dashboard/employees");
-      }
-    }
-    addEmployees();
-  };
+    dispatch(employeeCreateThunk(values));
+  }
 
   return (
     <div className='wrapper-form'>
       <h1 className='title-form'>Create Employee Form</h1>
       <Form
+        form={form}
         name="create-form"
         className='create-employee-form'
         labelCol={{ span: 24}}

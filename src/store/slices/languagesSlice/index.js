@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { apiLanguagesGetAll } from '../../../api/languages/languages.api';
 
-export const languagesThunk = createAsyncThunk("languages/getAll", async (params, thunkApi) => {
+export const languagesThunk = createAsyncThunk("languages/getAll", async (thunkApi) => {
   try {
     const res = await apiLanguagesGetAll();
     if(res.status === 200) {
@@ -27,7 +27,7 @@ export const languagesSlice = createSlice({
 
     .addCase(languagesThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.token = action.payload;
+      state.languages = action.payload;
     })
 
     .addCase(languagesThunk.rejected, (state, action) => {

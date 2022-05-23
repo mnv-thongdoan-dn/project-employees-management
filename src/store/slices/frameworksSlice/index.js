@@ -5,7 +5,7 @@ export const frameWorksThunk = createAsyncThunk("frameWorks/getAll", async (para
   try {
     const res = await apiFrameWorkGetAll(params);
     if(res.status === 200) {
-      return res.data;
+      return res.data[0].values;
     }
   } catch (error) {
     return thunkApi.rejectWithValue(error);
@@ -27,7 +27,7 @@ export const frameWorksSlice = createSlice({
 
     .addCase(frameWorksThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.token = action.payload;
+      state.frameWorks = action.payload;
     })
 
     .addCase(frameWorksThunk.rejected, (state, action) => {

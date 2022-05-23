@@ -1,23 +1,49 @@
 .page-dashboard {
-  .ant-layout-sider{
+  aside {
+    @include pxRem(width, 150px !important);
+    @include pxRem(max-width, 150px !important);
+    @include pxRem(min-width, 150px !important);
     background-color: map-get($colors, bg-blue);
 
     .ant-layout-sider-children {
       .logo {
-        height: 32px;
-        margin: 16px;
-        background: rgba(255, 255, 255, 0.3);
+        @include pxRem(width, 100px);
+        @include pxRem(height, 65px);
+        @include pxRem(margin, 8px auto);
+        @include pxRem(padding, 12px);
+        @include pxRem(border-radius, 6px);
+        background-color: map-get($colors, white );
+        display: block;
+      }
+    }
+  }
+
+  aside.ant-layout-sider-collapsed {
+    @include pxRem(width, 80px !important);
+    @include pxRem(max-width, 80px !important);
+    @include pxRem(min-width, 80px !important);
+
+    .ant-layout-sider-children {
+      .logo {
+        @include pxRem(width, 60px);
+        @include pxRem(height, 45px);
+        @include pxRem(margin, 20px auto);
+        @include pxRem(padding, 4px);
+        @include pxRem(border-radius, 6px);
+        background-color: map-get($colors, white );
+        display: block;
       }
     }
   }
 
   .ant-layout-header {
+    @include pxRem(padding, 0 20px);
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color:  map-get($colors, bg-blue);
 
-    .trigger {
+    .trigger, .btn-logout {
       display: inline-block;
       height: inherit;
 
@@ -34,16 +60,8 @@
     }
 
     .btn-logout {
-      @include pxRem(font-size, 14px);
-      @include pxRem(border-radius, 6px);
-
-      span {
-        @include pxRem(margin-left, 10px);
-      }
-
-      &:hover {
-        color: map-get($colors, primary);
-        background-color: map-get($colors, white);
+      &-text {
+        display: none;
       }
     }
   }
@@ -58,5 +76,60 @@
     @include pxRem(padding, 24px);
     @include pxRem(min-height, 280px);
     background-color: map-get($colors, white );
+  }
+
+  @include respond-above(x-small) {
+    aside {
+      @include pxRem(width, 200px !important);
+      @include pxRem(max-width, 200px !important);
+      @include pxRem(min-width, 200px !important);
+
+      .ant-layout-sider-children {
+        .logo {
+          @include pxRem(width, 150px);
+          @include pxRem(height, 65px);
+          @include pxRem(margin, 20px auto);
+        }
+      }
+    }
+    .ant-layout-header {
+      @include pxRem(padding, 0 40px);
+    }
+  }
+
+  @include respond-above(small) {
+    .ant-layout-header {
+      .btn-logout {
+        @include pxRem(height, 40px);
+        @include pxRem(line-height, 40px);
+        @include pxRem(border-radius, 4px);
+        @include pxRem(padding, 0px 20px);
+
+        font-weight: map-get($font-weight, medium );
+        background-color: map-get($colors, primary );
+        letter-spacing: 1px;
+        color: map-get($colors, white );
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &-text {
+          @include pxRem(font-size, 14px);
+          display: inline-block;
+        }
+
+        span.anticon {
+          display: none;
+        }
+
+        &:hover, &:active, &:focus {
+          background-color: map-get($colors, white);
+          color: map-get($colors, primary);
+          transition: all .5s ease-in-out;
+        }
+      }
+    }
   }
 }

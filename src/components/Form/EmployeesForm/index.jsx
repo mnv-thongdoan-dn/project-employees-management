@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Form, Input, Select, Radio, Button, InputNumber } from 'antd';
 import { 
   FileImageOutlined, 
@@ -20,88 +20,72 @@ import {
 import { positionsThunk } from '../../../store/slices/positionsSlice';
 import { languagesThunk } from '../../../store/slices/languagesSlice';
 import { frameWorksThunk } from '../../../store/slices/frameworksSlice';
-import { employeeGetItemThunk, employeeUpdateThunk } from '../../../store/slices/employeesSlice';
+import { employeeCreateThunk } from '../../../store/slices/employeesSlice';
 
 const { Option } = Select;
 
-const EditEmployees = () => {
+const EmployeesForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const params = useParams();
   const [form] = Form.useForm()
 
-  const { isLoading, status, employee } = useSelector(employeesSelector);
+  const { isLoading, status } = useSelector(employeesSelector);
   const { positions } = useSelector(positionsSelector);
   const { languages } = useSelector(languagesSelector);
   const { frameWorks } = useSelector(frameWorksSelector);
-  const [ selectedlanguage, setSelectedLanguage ] = useState('');
+  const [ selectedlanguage, setSelectedLanguage ] = useState(1);
+
+  const initialValues= {
+    avatar: '',
+    name: '',
+    age: '',
+    gender: 'male',
+    positions: '',
+    language: 'Php',
+    frameWorks: [],
+    email: '',
+    phoneNumber: '',
+    address: '',
+    cv: ''
+  };
 
   useEffect(() => {
     dispatch(positionsThunk());
     dispatch(languagesThunk());
-    dispatch(employeeGetItemThunk(params.id));
   }, [])
 
   useEffect(() => {
-    form.setFieldsValue(employee);
-    const convertLanguageId = (data = selectedlanguage) => {
-      switch (data) {
-        case "Php":
-          return 1
-          break;
-  
-        case "Ruby":
-          return 2
-          break;
-  
-        case "Javascript":
-          return 3
-          break;
-  
-        case "Java":
-          return 4
-          break;
-  
-        case "Python":
-          return 5
-          break;
-  
-        default:
-          break;
-      }
-    }
-    setSelectedLanguage(convertLanguageId(employee.language));
-  }, [form, employee])
-
-  useEffect(() => {
-    if(selectedlanguage) {
-      dispatch(frameWorksThunk(selectedlanguage));
-    }
+    dispatch(frameWorksThunk(selectedlanguage));
   }, [selectedlanguage])
 
+  useEffect(() => {
+    if(status === 201) {
+      Notification('success', "Employees Message", "Create Employees Success!")
+      navigate("/dashboard/employees");
+    }
+  }, [status])
+
   const handleOnChangeSelect = (value) => {
-    console.log("values", value)
     setSelectedLanguage(value);
     form.setFieldsValue({frameWorks: []});
   }
 
   const onFinish = (values) => {
-    console.log("values", values)
-    dispatch(employeeUpdateThunk(values));
+    dispatch(employeeCreateThunk(values));
   }
 
   return (
     <div className='wrapper-form'>
-      <h1 className='title-form'>Edit Employee</h1>
+      <h1 className='title-form'>Create Employee Form</h1>
       <Form
         form={form}
         name="create-form"
         className='create-employee-form'
         labelCol={{ span: 24}}
         wrapperCol={{ span: 24 }}
-        initialValues={ employee }
+        initialValues={initialValues}
         onFinish={onFinish}
-        autoComplete="on"
+        autoComplete="off"
       >
         <Form.Item
           label="Avatar"
@@ -197,7 +181,7 @@ const EditEmployees = () => {
             {
               languages && languages.map((language) => {
                 return (
-                  <Option key={language.id} value={[language.id, language.value]}>{language.value}</Option>
+                  <Option key={language.id} value={language.id}>{language.value}</Option>
                 )
               })
             }
@@ -313,4 +297,4 @@ const EditEmployees = () => {
   )
 }
 
-export default EditEmployees;
+export default EmployeesForm;

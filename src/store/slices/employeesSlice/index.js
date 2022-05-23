@@ -1,12 +1,13 @@
-import { createSlice, createAsyncThunk, unwrapResult } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { 
   apiEmployeesGetList, 
   apiEmployeesCreate, 
-  apiEmployeesDelete 
+  apiEmployeesDelete,
+  apiEmployeesUpdate,
+  apiEmployeeGetItem
 } from '../../../api/employees/employees.api';
 
-export const EmployeesGetListThunk = createAsyncThunk("employees/getAll", async (params, thunkApi) => {
-  console.log("params-thunk-getall", params);
+export const employeesGetListThunk = createAsyncThunk("employees/getAll", async (params, thunkApi) => {
   try {
     const res = await apiEmployeesGetList();
     if(res.status === 200) {
@@ -15,11 +16,11 @@ export const EmployeesGetListThunk = createAsyncThunk("employees/getAll", async 
   } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
-}) ;
+});
 
-export const EmployeesCreateThunk = createAsyncThunk("employees/create", async (params, thunkApi) => {
+export const employeeGetItemThunk = createAsyncThunk("employees/getItem", async (params, thunkApi) => {
   try {
-    const res = await apiEmployeesCreate(params);
+    const res = await apiEmployeeGetItem(params);
     if(res.status === 200) {
       return res.data;
     }
@@ -28,15 +29,33 @@ export const EmployeesCreateThunk = createAsyncThunk("employees/create", async (
   }
 });
 
-export const EmployeesDeleteThunk = createAsyncThunk("employees/delete", async (params, thunkApi) => {
+export const employeeCreateThunk = createAsyncThunk("employees/create", async (params, thunkApi) => {
+  try {
+    const res = await apiEmployeesCreate(params);
+    return res.status;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error);
+  }
+});
+
+export const employeeDeleteThunk = createAsyncThunk("employees/delete", async (params, thunkApi) => {
   try {
     const res = await apiEmployeesDelete(params);
     if(res.status === 200) {
-      thunkApi.dispatch(EmployeesGetListThunk(123))
-      // const result = await thunkApi.dispatch(EmployeesGetListThunk());
-      // console.log("result-thunk",unwrapResult(result));
-      // return unwrapResult(result);
+      thunkApi.dispatch(employeesGetListThunk())
     }
+  } catch (error) {
+    return thunkApi.rejectWithValue(error);
+  }
+}) ;
+
+export const employeeUpdateThunk = createAsyncThunk("employees/update", async (params, thunkApi) => {
+  try {
+    const res = await apiEmployeesUpdate(params);
+    console.log("res-apiEmployeesUpdate", res)
+    // if(res.status === 200) {
+    //   thunkApi.dispatch(employeesGetListThunk())
+    // }
   } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
@@ -47,53 +66,82 @@ export const EmployeesSlice = createSlice({
   initialState: {
     isLoading: false,
     employees: [],
+    employee: {},
     error: null,
+    status: null
   },
   reducers: {},
   extraReducers: (builder) => {
 
     // get list
-    builder.addCase(EmployeesGetListThunk.pending, (state) => {
+    builder.addCase(employeesGetListThunk.pending, (state) => {
       state.isLoading = true;
     })
 
-    .addCase(EmployeesGetListThunk.fulfilled, (state, action) => {
+    .addCase(employeesGetListThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      console.log(" action.payload employees", action.payload)
       state.employees = action.payload;
     })
 
-    .addCase(EmployeesGetListThunk.rejected, (state, action) => {
+    .addCase(employeesGetListThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error
+    })
+
+    // get item
+    .addCase(employeeGetItemThunk.pending, (state) => {
+      state.isLoading = true;
+    })
+
+    .addCase(employeeGetItemThunk.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.employee = action.payload;
+    })
+
+    .addCase(employeeGetItemThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error
     })
 
     //  create
-    .addCase(EmployeesCreateThunk.pending, (state) => {
+    .addCase(employeeCreateThunk.pending, (state) => {
       state.isLoading = true;
     })
 
-    .addCase(EmployeesCreateThunk.fulfilled, (state, action) => {
+    .addCase(employeeCreateThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.employees.push(action.payload);
+      state.status = action.payload;
     })
 
-    .addCase(EmployeesCreateThunk.rejected, (state, action) => {
+    .addCase(employeeCreateThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error
     })
 
     //  delete
-    .addCase(EmployeesDeleteThunk.pending, (state) => {
+    .addCase(employeeDeleteThunk.pending, (state) => {
       state.isLoading = true;
     })
 
-    .addCase(EmployeesDeleteThunk.fulfilled, (state, action) => {
+    .addCase(employeeDeleteThunk.fulfilled, (state) => {
       state.isLoading = false;
-      // state.employees = action.payload;
     })
 
-    .addCase(EmployeesDeleteThunk.rejected, (state, action) => {
+    .addCase(employeeDeleteThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error
+    })
+
+    //  update
+    .addCase(employeeUpdateThunk.pending, (state) => {
+      state.isLoading = true;
+    })
+
+    .addCase(employeeUpdateThunk.fulfilled, (state) => {
+      state.isLoading = false;
+    })
+
+    .addCase(employeeUpdateThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error
     })

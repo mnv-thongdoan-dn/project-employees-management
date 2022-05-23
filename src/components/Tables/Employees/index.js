@@ -2,14 +2,12 @@ import React, {  useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Button, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { EmployeesGetListThunk, EmployeesDeleteThunk } from '../../../store/slices/employeesSlice';
+import { employeesGetListThunk, employeeDeleteThunk } from '../../../store/slices/employeesSlice';
 import Confirm from '../../common/Modal/Confirm';
 import Notification from '../../common/Notification';
 import { employeesSelector } from '../../../store/selectors';
 
-
 const TableEmployees = () => {
-
   const dispatch = useDispatch();
   const { isLoading, employees } = useSelector(employeesSelector);
   const [ onConfirm, setOnConfirm ] = useState(false);
@@ -32,7 +30,7 @@ const TableEmployees = () => {
 
   const handleOk = () => {
     const deleteEmployee = async () => {
-      const result = await dispatch(EmployeesDeleteThunk(employeeSelected))
+      const result = await dispatch(employeeDeleteThunk(employeeSelected))
       if(result.meta.requestStatus === "fulfilled") {
         Notification('success', "employee message", "Delete employee success !")
       }
@@ -46,7 +44,7 @@ const TableEmployees = () => {
   }
 
   useEffect(() => {
-    dispatch(EmployeesGetListThunk());
+    dispatch(employeesGetListThunk());
   }, [])
 
   const columns = [
@@ -151,7 +149,7 @@ const TableEmployees = () => {
       width: 200,
       render: (record) => (
         <div className='group-btn'>
-          <Link to='edit' className='btn btn-edit'>Edit</Link>
+          <Link to={`edit/${record.id}`} className='btn btn-edit'>Edit</Link>
           <Button onClick={() => handleDelete(record)} className='btn btn-delete'>Delete</Button>
         </div>
       )

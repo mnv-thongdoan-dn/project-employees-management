@@ -6,7 +6,7 @@ select,
 textarea {
   @include pxRem("padding", 8);
   @include pxRem("height", 40);
-  // @include pxRem(border-radius, 8);
+  @include pxRem(border-radius, 8);
   width: 100%;
   border: 1px solid map-get($colors, border-gray);
   color: map-get($colors, txt-primary);
@@ -43,8 +43,12 @@ input {
   }
 }
 
-// Custom input number antd
+// custom input antd 
+.ant-input-affix-wrapper {
+  @include pxRem(border-radius, 8);
+}
 
+// Custom input number antd
 .ant-input-number-affix-wrapper {
   @include pxRem(height, 50px);
   width: 100%;
@@ -55,6 +59,9 @@ input {
 }
 
 // custom select antd
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  @include pxRem(border-radius, 8px);
+}
 
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector, .ant-select-selector {
   @include pxRem(height, 50px);
@@ -66,7 +73,6 @@ input {
 }
 
 // custom form.item antd
-
 .ant-form-item {
   label, input, select {
     font-size: $font-size-lg;
@@ -91,99 +97,150 @@ label {
 
 // wrapper form 
 
-.wrapper-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+// .wrapper-form {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
 
-  .title-form {
-    @include pxRem(margin-bottom, 30px);
-    font-size: map-get($h-font-size, h5);
-    text-align: center;
-    color: map-get($colors, bg-blue);
-  }
+//   .title-form {
+//     @include pxRem(margin-bottom, 30px);
+//     font-size: map-get($h-font-size, h5);
+//     text-align: center;
+//     color: map-get($colors, bg-blue);
+//   }
 
-  @include respond-above(x-small) {
-    .title-form {
-      font-size: map-get($h-font-size, h4);
-    }
+//   @include respond-above(x-small) {
+//     .title-form {
+//       font-size: map-get($h-font-size, h4);
+//     }
 
-    button {
-      @include pxRem(width, 120px);
-    }
-  }
+//     button {
+//       @include pxRem(width, 120px);
+//     }
+//   }
 
-  @include respond-above(small) {
-    .title-form {
-      font-size: map-get($h-font-size, h3);
-    }
-  }
+//   @include respond-above(small) {
+//     .title-form {
+//       font-size: map-get($h-font-size, h3);
+//     }
+//   }
 
-  @include respond-above(medium) {
-    .title-form {
-      font-size: map-get($h-font-size, h2);
-    }
+//   @include respond-above(medium) {
+//     .title-form {
+//       font-size: map-get($h-font-size, h2);
+//     }
 
-    form {
-      width: 80%;
+//     form {
+//       width: 80%;
 
 
-      button {
-        @include pxRem(width, 170px);
-      }
-    }
-  }
+//       button {
+//         @include pxRem(width, 170px);
+//       }
+//     }
+//   }
 
-  @include respond-above(wide) {
-    form {
-      width: 60%;
-    }
-  }
-}
+//   @include respond-above(wide) {
+//     form {
+//       width: 60%;
+//     }
+//   }
+// }
 
 
 // form search employees
-.search-form {
-  @include pxRem(margin, 20px 0px);
+// .search-form {
+//   @include pxRem(margin, 20px 0px);
 
-  .search-basic, .search-advanced {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+//   .search-basic, .search-advanced {
+//     display: flex;
+//     justify-content: space-evenly;
+//     align-items: center;
 
-    .ant-form-item {
-      width: 300px;
-      display: flex;
-      align-items: center;
+//     .ant-form-item {
+//       width: 300px;
+//       display: flex;
+//       align-items: center;
 
-      .ant-select-selector {
-        @include pxRem(height, 40px);
+//       .ant-select-selector {
+//         @include pxRem(height, 40px);
+//       }
+//     }
+//   }
+
+//   button {
+//     @include pxRem(height, 40px);
+//     @include pxRem(margin-bottom, 24px);
+//     width: 100%;
+//   }
+// }
+
+.search-wrapper {
+  @include pxRem(margin-bottom, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+
+  .ant-col {
+    width: 100%;
+    &:last-child {
+      text-align: end;
+    }
+
+    .search-form {
+      .search-basic, .search-advanced {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+      }
+  
+      .ant-row.ant-form-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+  
+      label {
+        @include pxRem(font-size, 14px);
+        font-weight: map-get($font-weight, medium);
       }
     }
   }
 
-  button {
-    @include pxRem(height, 40px);
-    @include pxRem(margin-bottom, 24px);
-    width: 100%;
+  .btn {
+    @include pxRem(width, 160px);
+    @include pxRem(font-size, 14px);
+    @include pxRem(padding, 5px 12px);
+    @include pxRem(border-radius, 4px);
   }
 
-  a {
-    @include pxRem(height, 40px);
-    @include pxRem(margin-bottom, 24px);
-    @include pxRem(padding, 8px 0);
-    background-color: map-get($colors, bg-blue);
-    color: map-get($colors, white);
-    width: 100%;
-    text-align: center;
+  .ant-input {
+    @include pxRem(font-size, 16px);
+  }
 
-      svg {
-        @include pxRem(margin-left, 5px);
+  @include respond-above(medium){
+    .ant-col {
+      .search-form {
+        .search-basic, .search-advanced {
+          flex-direction: row;
+        }
+        .ant-row.ant-form-item {
+          width: 50%;
+        }
       }
-    &:hover {
-      background-color: #1e52c2ce;
-      transition: all .5s ease-in-out;
+    }
+  }
+
+  @include respond-above(wide){
+    flex-direction: row;
+    align-items: flex-start;
+
+    .btn {
+      @include pxRem(height, 50px);
     }
   }
 }

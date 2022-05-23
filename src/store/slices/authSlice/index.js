@@ -5,13 +5,11 @@ import Notification from '../../../components/common/Notification';
 export const LoginThunk = createAsyncThunk("auth/login", async (params, thunkApi) => {
   try {
     const res = await apiAuthLogin(params);
-    console.log("res", res);
     if(res.status === 200) {
       return res.data.accessToken;
     }
   } catch (error) {
-    // console.log("[error]---------", error.response.data.message);
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 }) ;
 
@@ -35,9 +33,9 @@ export const AuthSlice = createSlice({
       // console.log("[fulfilled]----------", action.payload)
     })
 
-    .addCase(LoginThunk.rejected, (state) => {
+    .addCase(LoginThunk.rejected, (state, action) => {
       state.isLoading = false;
-      Notification('error', 'Login Error Message', "Incorrect Email or Password");
+      Notification('error', `Error ${action.payload.status}`, action.payload.message);
       // console.log("[rejected]------------", action.error)
     })
   }

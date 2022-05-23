@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { apiPositionGetAll } from '../../../api/positions/positions.api';
 
-export const positionsThunk = createAsyncThunk("positions/getAll", async (params, thunkApi) => {
+export const positionsThunk = createAsyncThunk("positions/getAll", async (thunkApi) => {
   try {
     const res = await apiPositionGetAll();
     if(res.status === 200) {
@@ -27,7 +27,7 @@ export const positionsSlice = createSlice({
 
     .addCase(positionsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.token = action.payload;
+      state.positions = action.payload;
     })
 
     .addCase(positionsThunk.rejected, (state, action) => {

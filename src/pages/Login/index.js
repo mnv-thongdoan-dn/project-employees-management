@@ -15,8 +15,8 @@ const Login = () => {
   };
   
   return (
-    <div className='page-home'>
-      <Row justify='center' className='page-home-wrapper'>
+    <div className='page-login'>
+      <Row justify='center' className='page-login-wrapper'>
         <Col lg={12} className='banner-login'>
           <img src={BannerLogin} alt='banner-login'/>
         </Col>
@@ -85,7 +85,7 @@ const Login = () => {
             <Form.Item
               wrapperCol={{ span: 24 }}
             >
-              <Button loading={isLoading} className='btn' type="primary" htmlType="submit">
+              <Button loading={isLoading} className='btn' htmlType="submit">
                 Submit
               </Button>
             </Form.Item>

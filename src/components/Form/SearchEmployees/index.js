@@ -1,131 +1,100 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input, Select, Button, Row, Col } from 'antd';
-import { DownOutlined, UpOutlined, UserAddOutlined } from '@ant-design/icons';
+import { DownOutlined, UpOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { positionsThunk } from '../../../store/slices/positionsSlice';
+import { languagesThunk } from '../../../store/slices/languagesSlice';
+import { frameWorksThunk } from '../../../store/slices/frameworksSlice';
+import { 
+  positionsSelector, 
+  languagesSelector,
+  frameWorksSelector
+} from '../../../store/selectors';
 
 const { Option } = Select;
 
-const positions = [
-  {id: 1, value: "Intern"},
-  {id: 2, value: "Fresher"},
-  {id: 3, value: "Junior"},
-  {id: 4, value: "Senior"},
-  {id: 5, value: "Leader"},
-];
-
-const languages = [
-  {id: 1, value: "Php"},
-  {id: 2, value: "Ruby"},
-  {id: 3, value: "Javascript"},
-  {id: 4, value: "Java"},
-  {id: 5, value: "C++"},
-];
-
-const frameworks = [
-  {id: 1, value: "React"},
-  {id: 2, value: "Vue"},
-  {id: 3, value: "Laravel"},
-  {id: 4, value: "Angular"},
-  {id: 5, value: "C++"},
-];
-
 const SearchEmployees = () => {
-
+  const dispatch = useDispatch();
+  const [form] = Form.useForm()
   const [ searchToggle, setSearchToggle ] = useState(false);
-  // const [ languages, setLanguages ] = useState([]);
-  // const [ frameworks, setFrameworks ] = useState([]);
-  // const [ idLanguage, setIdLanguage ] = useState('');
+  const { positions } = useSelector(positionsSelector);
+  const { languages } = useSelector(languagesSelector);
+  const { frameWorks } = useSelector(frameWorksSelector);
+  const [ selectedlanguage, setSelectedLanguage ] = useState('');
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
+  useEffect(() => {
+    dispatch(positionsThunk());
+    dispatch(languagesThunk());
+  }, [])
 
-  // const getValueLanguages = (e) => {
-  //   console.log("value language", e)
-  //   setIdLanguage(e)
-  // }
+  useEffect(() => {
+    if(selectedlanguage) {
+      dispatch(frameWorksThunk(selectedlanguage));
+    }
+  }, [selectedlanguage])
+
+  const handleOnChangeSelect = (value) => {
+    console.log("values", value)
+    setSelectedLanguage(value);
+    form.setFieldsValue({frameWorks: []});
+  }
 
   const toggleSearchBtn = () => {
     setSearchToggle(!searchToggle);
   }
 
-  // useEffect(() => {
-  //   const getLanguages = async () => {
-  //     const response = await fetch("https://server-employees-management.herokuapp.com/api/languages")
-  //     .then(res => res);
-  //     const data = await response.json()
-  //     setLanguages(data)
-  //   }
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
 
-  //   getLanguages();
-  // }, [])
+  const layoutLabel = {
+    xs: { span: 24 },
+    sm: { span: 4},
+    md: { span: 10},
+    lg: { span: 8},
+  }
 
-  // useEffect(() => {
-  //   const getFrameworks = async () => {
-  //     if(!idLanguage) {
-  //       return;
-  //     }
-  //     const response = await fetch(`https://server-employees-management.herokuapp.com/api/languages/${idLanguage}/frameworks`)
-  //     .then(res => res);
-  //     const data = await response.json();
-  //     console.log("data frameworks", data[0].values)
-  //     setFrameworks(data[0].values)
-  //   }
-  //   getFrameworks();
-  // }, [idLanguage])
-
-  // console.log("frameworks", frameworks)
+  const layoutWrapper = {
+    sx: { span: 24},
+    sm: { span: 20},
+    md: { span: 14},
+    lg: { span: 16}
+  }
 
   return (
-    <Form
-      name="search-form"
-      className='search-form'
-      // initialValues={{
-      //   remember: true,
-      // }}
-      onFinish={onFinish}
-      autoComplete="off"
-    >
-      <Row>
-        <Col lg={20} className='search-wrapper'>
+    <Row className='search-wrapper'>
+      <Col xs={24} sm={24} lg={18} xl={20}>
+        <Form
+          form={form}
+          name="search-form"
+          className='search-form'
+          initialValues={{
+            frameWorks: []
+          }}
+          labelCol={layoutLabel}
+          wrapperCol={layoutWrapper}
+          onFinish={onFinish}
+          autoComplete="on"
+        >
           <Row className='search-basic'>
             <Form.Item
               label="Full Name"
               name="name"
             >
               <Input 
-                // prefix={<UserOutlined className="site-form-item-icon" />} 
-                placeholder="Search Full Name" 
+                prefix={<UserOutlined className="site-form-item-icon" />} 
+                placeholder="Full Name" 
               />
             </Form.Item>
 
             <Form.Item
-              label="Age"
-              name="age"
-            >
-              <Input
-                // prefix={<LockOutlined className="site-form-item-icon" />}
-                placeholder="Search Age" 
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Gender"
-              name="gender"
-            >
-              <Input
-                // prefix={<LockOutlined className="site-form-item-icon" />}
-                placeholder="Search gender" 
-              />
-            </Form.Item>
-          </Row>
-          { searchToggle 
-            ?  <Row className='search-advanced'>
-                <Form.Item
                   label="Position"
                   name="position"
                 >
-                  <Select>
+                  <Select 
+                    placeholder="choose a position"
+                  >
                     {
                       positions && positions.map((position) => {
                         return (
@@ -135,12 +104,17 @@ const SearchEmployees = () => {
                     }
                   </Select>
                 </Form.Item>
-
+          </Row>
+          { searchToggle 
+            ?  <Row className='search-advanced'>
                 <Form.Item
                   label="Language"
                   name="language"
                 >
-                  <Select>
+                  <Select
+                    placeholder="choose a language"
+                    onChange={handleOnChangeSelect}
+                  >
                     {
                       languages && languages.map((language) => {
                         return (
@@ -152,24 +126,23 @@ const SearchEmployees = () => {
                 </Form.Item>
 
                 <Form.Item
-                  label="FrameWork"
-                  name="frameWork"
+                  label="FrameWorks"
+                  name="frameWorks"
                 >
                   <Select
                     mode="multiple"
                     style={{ width: '100%' }}
                     placeholder="select one frameworks"
                     optionLabelProp="label"
-                    // onChange={getValueLanguages}
                   >
                     {
-                      frameworks && frameworks.map((item) => {
+                      frameWorks && frameWorks.map((item) => {
                         return  (
                           <Option key={item.id} value={item.value} label={item.value}>
-                          <div className="demo-option-label-item">
-                            {item.value}
-                          </div>
-                        </Option>
+                            <div className="demo-option-label-item">
+                              {item.value}
+                            </div>
+                          </Option>
                         )
                       })
                     }
@@ -178,29 +151,21 @@ const SearchEmployees = () => {
               </Row> 
             : ''
           }
-        </Col>
-        <Col lg={4}>
-          <Row>
-            { searchToggle       
-              ? <Button className='search-btn-toggle' type="primary" htmlType="button" onClick={() => toggleSearchBtn()}>
-                  Search Basic 
-                  <UpOutlined/> 
-                </Button>
-              : <Button className='search-btn-toggle' type="primary" htmlType="button" onClick={() => toggleSearchBtn()}>
-                  Search Advanced 
-                  <DownOutlined/>
-                </Button>
-            }
-          </Row>
-          <Row>
-            <Link to="create">
-              Create New Employee
-              <UserAddOutlined />
-            </Link>
-          </Row>
-        </Col>
-      </Row>
-    </Form>
+        </Form>
+      </Col>
+      <Col xs={24} sm={24} lg={6} xl={4}>
+        { searchToggle       
+          ? <Button className='btn btn-primary  btn-search-toggle' onClick={() => toggleSearchBtn()}>
+              <span className='text'>Search Basic </span>
+              <UpOutlined/> 
+            </Button>
+          : <Button className='btn btn-primary  btn-search-toggle' onClick={() => toggleSearchBtn()}>
+              <span className='text'>Search Advanced</span>
+              <DownOutlined/>
+            </Button>
+        }
+      </Col>
+    </Row>
   )
 }
 
