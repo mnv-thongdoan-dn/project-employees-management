@@ -14,6 +14,7 @@ import { positionsThunk } from '../../store/slices/positionsSlice';
 import { languagesThunk } from '../../store/slices/languagesSlice';
 import { frameWorksThunk } from '../../store/slices/frameworksSlice';
 import { employeeCreateThunk } from '../../store/slices/employeesSlice';
+import getBase64 from '../../helpers/base64';
 
 const CreateEmployees = () => {
   const dispatch = useDispatch();
@@ -25,9 +26,10 @@ const CreateEmployees = () => {
   const { languages } = useSelector(languagesSelector);
   const { frameWorks } = useSelector(frameWorksSelector);
   const [ selectedlanguage, setSelectedLanguage ] = useState(1);
+  const [ base64File, setBase64File ] = useState('');
 
   const initialValues= {
-    avatar: '',
+    avatar: [],
     name: '',
     age: '',
     gender: 'male',
@@ -37,7 +39,7 @@ const CreateEmployees = () => {
     email: '',
     phoneNumber: '',
     address: '',
-    cv: ''
+    cv: []
   };
 
   useEffect(() => {
@@ -49,21 +51,18 @@ const CreateEmployees = () => {
     dispatch(frameWorksThunk(selectedlanguage));
   }, [selectedlanguage])
 
-  useEffect(() => {
-    if(status === 201) {
-      Notification('success', "Employees Message", "Create Employees Success!")
-      navigate("/dashboard/employees");
-    }
-  }, [status])
-
   const handleOnChangeSelect = (value) => {
     setSelectedLanguage(value);
     form.setFieldsValue({frameWorks: []});
   }
 
   const onFinish = (values) => {
-    console.log("values", values)
-    dispatch(employeeCreateThunk(values));
+    getBase64(values.cv[0].originFileObj, (url) => {
+      console.log("values", values)
+      const formatValues = {...values, cv: url}
+      console.log("formatValues", formatValues)
+      dispatch(employeeCreateThunk(formatValues));
+    })
   }
 
   return (

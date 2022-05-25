@@ -51,6 +51,7 @@ input {
 // Custom input number antd
 .ant-input-number-affix-wrapper {
   @include pxRem(height, 50px);
+  @include pxRem(border-radius, 8px);
   width: 100%;
 
   input {
@@ -109,6 +110,11 @@ label {
     color: map-get($colors, bg-blue);
   }
 
+  .btn-upload {
+    @include pxRem(border-radius, 4px);
+    width: 100%;
+  }
+
   @include respond-above(x-small) {
     .title-form {
       font-size: map-get($h-font-size, h4);
@@ -143,6 +149,11 @@ label {
   @include respond-above(wide) {
     form {
       width: 60%;
+
+      .ant-upload.ant-upload-select-picture-card {
+        @include pxRem(width, 150px);
+        @include pxRem(height, 150px);
+      }
     }
   }
 }

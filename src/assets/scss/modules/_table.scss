@@ -9,6 +9,10 @@ table {
   td {
     border: 1px solid map-get($colors, border-gray);
 
+    a {
+      color: map-get($colors, secondary);
+    }
+
     .btn {
       @include pxRem(font-size, 14px);
       @include pxRem(border-radius, 6px);

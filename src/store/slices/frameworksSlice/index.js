@@ -8,7 +8,7 @@ export const frameWorksThunk = createAsyncThunk("frameWorks/getAll", async (para
       return res.data[0].values;
     }
   } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 }) ;
 

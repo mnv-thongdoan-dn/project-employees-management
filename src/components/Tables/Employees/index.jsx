@@ -58,19 +58,27 @@ const TableEmployees = () => {
       key: 'index',
       fixed: windowSize >= 992 ? 'left' : '',
     },
-      {
+    {
       title: 'Avatar',
       width: 150,
       dataIndex: 'avatar',
       key: 'avatar',
       fixed: windowSize >= 992 ? 'left' : '',
-      render: text => <img src={text} alt='image'/>,
+      render: (avatar) => {
+        const urlAvatar = avatar[0].thumbUrl;
+        if(urlAvatar) {
+        return  <img src={urlAvatar} alt='image'/>
+        } else{
+          return <img src={avatar} alt='image'/>
+        }
+      }
     },
     {
       title: 'Full Name',
       width: 100,
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
+      render: (_) => <a>{_}</a>
     },
     {
       title: 'Age',
@@ -96,9 +104,9 @@ const TableEmployees = () => {
       dataIndex: 'language',
       key: 'language',
       width: 150,
-      render: (value) => {
-        if(typeof(value) === "number") { 
-          switch (value) {
+      render: (language) => {
+        if(typeof(language) === "number") { 
+          switch (language) {
             case 1:
               return "Php"
               break;
@@ -123,7 +131,7 @@ const TableEmployees = () => {
               break;
           }
         }
-        return value;
+        return language;
       }
     },
     {

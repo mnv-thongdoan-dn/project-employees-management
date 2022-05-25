@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -8,7 +8,7 @@ import useAuth from '../../hooks/Auth';
 
 const Login = () => {
   const { login } = useAuth()
-  const {isLoading} = useSelector(authSelector);
+  const { isLoading } = useSelector(authSelector);
 
   const onFinish = (values) => {
     login(values);

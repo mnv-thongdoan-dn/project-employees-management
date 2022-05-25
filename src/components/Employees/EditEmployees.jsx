@@ -26,6 +26,7 @@ const EditEmployees = () => {
   const { languages } = useSelector(languagesSelector);
   const { frameWorks } = useSelector(frameWorksSelector);
   const [ selectedlanguage, setSelectedLanguage ] = useState('');
+  const [ avatar, setAvatar ] = useState('');
 
   useEffect(() => {
     dispatch(positionsThunk());
@@ -70,13 +71,29 @@ const EditEmployees = () => {
     }
   }, [selectedlanguage])
 
+  useEffect(() => {
+    if(status === 200) {
+      Notification('success', "Employees Message", "Edit Employees Success!")
+      navigate("/dashboard/employees");
+    }
+  }, [status])
+
   const handleOnChangeSelect = (value) => {
     setSelectedLanguage(value);
     form.setFieldsValue({frameWorks: []});
   }
 
+  const getImage = (url) => {
+    setAvatar(url)
+  }
+
   const onFinish = (values) => {
-    dispatch(employeeUpdateThunk(values));
+    const formatValues = {...values, avatar}
+    const datas = {
+      idEmployee: params.id,
+      dataEmployee: formatValues
+    }
+    dispatch(employeeUpdateThunk(datas));
   }
 
   return (
@@ -95,6 +112,7 @@ const EditEmployees = () => {
       handleOnChangeSelect={handleOnChangeSelect}
       textBtn='save'
       titleForm='Edit Employee'
+      getImage={getImage}
     />
 
   )

@@ -10,22 +10,18 @@ import {
 export const employeesGetListThunk = createAsyncThunk("employees/getAll", async (params, thunkApi) => {
   try {
     const res = await apiEmployeesGetList();
-    if(res.status === 200) {
       return res.data;
-    }
   } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 });
 
 export const employeeGetItemThunk = createAsyncThunk("employees/getItem", async (params, thunkApi) => {
   try {
     const res = await apiEmployeeGetItem(params);
-    if(res.status === 200) {
       return res.data;
-    }
   } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 });
 
@@ -34,30 +30,25 @@ export const employeeCreateThunk = createAsyncThunk("employees/create", async (p
     const res = await apiEmployeesCreate(params);
     return res.status;
   } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 });
 
 export const employeeDeleteThunk = createAsyncThunk("employees/delete", async (params, thunkApi) => {
   try {
     const res = await apiEmployeesDelete(params);
-    if(res.status === 200) {
-      thunkApi.dispatch(employeesGetListThunk())
-    }
+    thunkApi.dispatch(employeesGetListThunk())
   } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 }) ;
 
 export const employeeUpdateThunk = createAsyncThunk("employees/update", async (params, thunkApi) => {
   try {
     const res = await apiEmployeesUpdate(params);
-    console.log("res-apiEmployeesUpdate", res)
-    // if(res.status === 200) {
-    //   thunkApi.dispatch(employeesGetListThunk())
-    // }
+    return res.status
   } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 }) ;
 
@@ -137,8 +128,9 @@ export const EmployeesSlice = createSlice({
       state.isLoading = true;
     })
 
-    .addCase(employeeUpdateThunk.fulfilled, (state) => {
+    .addCase(employeeUpdateThunk.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.status = action.payload;
     })
 
     .addCase(employeeUpdateThunk.rejected, (state, action) => {

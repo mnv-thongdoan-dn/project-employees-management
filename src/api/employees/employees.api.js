@@ -17,6 +17,6 @@ export const apiEmployeesDelete = (id) => {
   return api.delete(`${ENDPOINTS.employees}/${id}`);
 };
 
-export const apiEmployeesUpdate = (id) => {
-  return api.patch(`${ENDPOINTS.employees}/${id}`);
+export const apiEmployeesUpdate = (datas) => {
+  return api.patch(`${ENDPOINTS.employees}/${datas.idEmployee}`, datas.dataEmployee);
 };

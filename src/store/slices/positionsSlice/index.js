@@ -8,7 +8,7 @@ export const positionsThunk = createAsyncThunk("positions/getAll", async (thunkA
       return res.data;
     }
   } catch (error) {
-    return thunkApi.rejectWithValue(error);
+    return thunkApi.rejectWithValue(error.response.data);
   }
 }) ;
 

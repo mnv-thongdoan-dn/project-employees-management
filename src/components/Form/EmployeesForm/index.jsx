@@ -1,33 +1,74 @@
-import React from 'react';
-import { Form, Input, Select, Radio, Button, InputNumber } from 'antd';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Select, Radio, Button, InputNumber, message, Upload } from 'antd';
 import { 
   FileImageOutlined, 
   UserOutlined, 
   NumberOutlined, 
   MailOutlined, 
   PhoneOutlined, 
-  HomeOutlined 
+  HomeOutlined ,
+  UploadOutlined
 } from '@ant-design/icons';
 
 const { Option } = Select;
 
 const EmployeesForm = (props) => {
- const { 
-          form, 
-          name, 
-          className, 
-          labelCol, 
-          wrapperCol, 
-          initialValues, 
-          onFinish,
-          positions,
-          languages,
-          frameWorks,
-          handleOnChangeSelect,
-          isLoading,
-          textBtn,
-          titleForm
-        } = props;
+
+  const navigate = useNavigate();
+  const [ disableUpImage, setDisableUpImage ] = useState(false);
+  const [ disableUpFile, setDisableUpFile ] = useState(false);
+  const [ base64FilePdf, setBase64FilePdf ] = useState('');
+  const { 
+        form, 
+        name, 
+        className, 
+        labelCol, 
+        wrapperCol, 
+        initialValues, 
+        onFinish,
+        positions,
+        languages,
+        frameWorks,
+        handleOnChangeSelect,
+        isLoading,
+        textBtn,
+        titleForm
+      } = props;
+
+  const handleChangeUploadImage = (info) => {
+    console.log('info', info)
+    const isJpgOrPng = info.file.type === 'image/jpeg' || info.file.type === 'image/png';
+    const isLt2M = info.file.size / 1024 / 1024 < 2;
+
+    if(isJpgOrPng && isLt2M) {
+      info.file.status = 'done';
+      info.fileList.length > 0 ? setDisableUpImage(true) : setDisableUpImage(false);
+
+      if (info.file.status === 'uploading') {
+        return info?.fileList;
+      }
+
+      return info?.fileList;
+
+      } else if(!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
+      } else if(!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+      }
+  };
+
+  const handleChangeUploadFile = (info) => {
+    const isJpgOrPng = info.file.type === 'application/pdf';
+    if(isJpgOrPng) {
+      info.file.status = 'done';
+      info.fileList.length > 0 ? setDisableUpFile(true) : setDisableUpFile(false);
+      return info?.fileList;
+    } else{
+      message.error('You can only upload PDF file!');
+      return;
+    }
+  }
 
   return (
     <div className='wrapper-form'>
@@ -42,17 +83,26 @@ const EmployeesForm = (props) => {
         onFinish={onFinish}
       >
         <Form.Item
-          label="Avatar"
           name="avatar"
-          hasFeedback={true}
+          label="Avatar"
+          valuePropName="fileList"
+          getValueFromEvent={handleChangeUploadImage}
           rules={[
             { required: true, message: 'Please input link avatar!' },
           ]}
         >
-          <Input 
-            prefix={<FileImageOutlined className="site-form-item-icon" />} 
-            placeholder="Link avatar" 
-          />
+          <Upload 
+            name="avatar" 
+            listType="picture"
+          >
+            <Button 
+            className='btn-upload' 
+            disabled={disableUpImage} 
+            icon={<UploadOutlined />}
+            >
+              Click to upload Avatar
+            </Button>
+          </Upload>
         </Form.Item>
 
         <Form.Item
@@ -169,6 +219,27 @@ const EmployeesForm = (props) => {
         </Form.Item>
 
         <Form.Item
+          label="CV"
+          name="cv"
+          valuePropName="fileList"
+          rules={[
+            { required: true, message: 'Please input your file CV!' },
+          ]}
+          getValueFromEvent={handleChangeUploadFile}
+        >
+          <Upload
+          >
+            <Button 
+              className='btn-upload' 
+              disabled={disableUpFile} 
+              icon={<UploadOutlined />}
+            >
+              Click to upload CV
+            </Button>
+          </Upload>
+        </Form.Item>
+
+        <Form.Item
           name="email"
           label="E-mail"
           hasFeedback={true}
@@ -217,24 +288,10 @@ const EmployeesForm = (props) => {
         </Form.Item>
 
         <Form.Item
-          label="CV"
-          name="cv"
-          hasFeedback={true}
-          rules={[
-            { required: true, message: 'Please input your file CV!' },
-          ]}
-        >
-          <Input 
-            prefix={<FileImageOutlined className="site-form-item-icon" />} 
-            placeholder="Link CV" 
-          />
-        </Form.Item>
-
-        <Form.Item
           wrapperCol={{ span: 24 }}
         >
           <div className='group-btn'>
-            <Button className='btn btn-secondary'>
+            <Button className='btn btn-secondary' onClick={() => navigate(-1)}>
               Cancel
             </Button>
             <Button loading={isLoading} className='btn btn-primary' htmlType="submit">
