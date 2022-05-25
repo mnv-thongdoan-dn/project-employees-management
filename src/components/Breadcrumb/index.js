@@ -11,13 +11,6 @@ const BreadCrumb = () => {
     return (
       <div>
         <Breadcrumb>
-          {/* {pathnames.length > 0 ? (
-            <Breadcrumb.Item>
-              <Link to="/Dashboard">Dashboard</Link>
-            </Breadcrumb.Item>
-          ) : (
-            <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-          )} */}
           {pathnames.map((name, index) => {
             const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
             const isLast = index === pathnames.length - 1;

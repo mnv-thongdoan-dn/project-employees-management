@@ -1,6 +1,6 @@
 .btn {
   @include pxRem(padding, 8 16);
-  @include pxRem(border-radius, 8);
+  @include pxRem(border-radius, 6);
   @include pxRem(font-size, 18);
   @include pxRem(height, 40);
   background: map-get($colors, primary);
@@ -97,7 +97,7 @@
 .btn-create {
   @include pxRem(margin-bottom, 24px);
   @include pxRem(padding, 10px 15px);
-  @include pxRem(border-radius, 4px);
+  @include pxRem(border-radius, 6px);
   @include pxRem(font-size, 14px);
 
   float: right;

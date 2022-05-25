@@ -6,7 +6,7 @@ select,
 textarea {
   @include pxRem("padding", 8);
   @include pxRem("height", 40);
-  @include pxRem(border-radius, 8);
+  @include pxRem(border-radius, 6);
   width: 100%;
   border: 1px solid map-get($colors, border-gray);
   color: map-get($colors, txt-primary);
@@ -45,13 +45,13 @@ input {
 
 // custom input antd 
 .ant-input-affix-wrapper {
-  @include pxRem(border-radius, 8);
+  @include pxRem(border-radius, 6);
 }
 
 // Custom input number antd
 .ant-input-number-affix-wrapper {
   @include pxRem(height, 50px);
-  @include pxRem(border-radius, 8px);
+  @include pxRem(border-radius, 6px);
   width: 100%;
 
   input {
@@ -61,7 +61,7 @@ input {
 
 // custom select antd
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  @include pxRem(border-radius, 8px);
+  @include pxRem(border-radius, 6px);
 }
 
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector, .ant-select-selector {
@@ -110,9 +110,33 @@ label {
     color: map-get($colors, bg-blue);
   }
 
+  label {
+    font-weight: map-get($font-weight, medium);
+    span {
+      font-weight: map-get($font-weight, normal);
+    }
+  }
+
+  label, input, input::placeholder {
+    @include pxRem(font-size, 14px);
+  }
+
+  button {
+    @include pxRem(font-size, 16px);
+  }
+
   .btn-upload {
-    @include pxRem(border-radius, 4px);
+    @include pxRem(border-radius, 6px);
+    @include pxRem(height, 50px);
     width: 100%;
+
+    span {
+      font-size: $font-size-base;
+    }
+  }
+
+  .ant-upload-list-text .ant-upload-list-item-name {
+    @include pxRem(width, 150px);
   }
 
   @include respond-above(x-small) {
@@ -154,6 +178,21 @@ label {
         @include pxRem(width, 150px);
         @include pxRem(height, 150px);
       }
+
+      label, input {
+        @include pxRem(font-size, 16px);
+      }
+
+      button {
+        @include pxRem(font-size, 18px);
+      }
+
+      .btn-upload {
+    
+        span {
+          @include pxRem(font-size, 16px);
+        }
+      }
     }
   }
 }
@@ -186,10 +225,21 @@ label {
         align-items: center;
         width: 100%;
       }
-  
+
+      .ant-input-affix-wrapper {
+        @include pxRem(padding, 0px 11px);
+      }
+
+      .ant-select-single:not(.ant-select-customize-input) .ant-select-selector, .ant-select-selector {
+        @include pxRem(height, 42px);
+      }
+
       label {
-        @include pxRem(font-size, 14px);
         font-weight: map-get($font-weight, medium);
+      }
+  
+      label, input, input::placeholder {
+        @include pxRem(font-size, 14px);
       }
     }
   }
@@ -198,7 +248,7 @@ label {
     @include pxRem(width, 160px);
     @include pxRem(font-size, 14px);
     @include pxRem(padding, 5px 12px);
-    @include pxRem(border-radius, 4px);
+    @include pxRem(border-radius, 6px);
   }
 
   .ant-input {
