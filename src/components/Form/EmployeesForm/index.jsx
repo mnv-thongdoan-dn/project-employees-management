@@ -13,11 +13,6 @@ import {
 const { Option } = Select;
 
 const EmployeesForm = (props) => {
-
-  const navigate = useNavigate();
-  const [ disableUpImage, setDisableUpImage ] = useState(false);
-  const [ disableUpFile, setDisableUpFile ] = useState(false);
-  const [ base64FilePdf, setBase64FilePdf ] = useState('');
   const { 
         form, 
         name, 
@@ -32,8 +27,13 @@ const EmployeesForm = (props) => {
         handleOnChangeSelect,
         isLoading,
         textBtn,
-        titleForm
+        titleForm,
+        disableBtn
       } = props;
+
+  const navigate = useNavigate();
+  const [ disableUpImage, setDisableUpImage ] = useState(disableBtn);
+  const [ disableUpFile, setDisableUpFile ] = useState(disableBtn);
 
   const handleChangeUploadImage = (info) => {
     const isJpgOrPng = info.file.type === 'image/jpeg' || info.file.type === 'image/png';

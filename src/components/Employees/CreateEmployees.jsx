@@ -87,6 +87,7 @@ const CreateEmployees = () => {
       frameWorks={frameWorks}
       textBtn='Create'
       titleForm='Create Employees'
+      disableBtn={false}
     />
   )
 }

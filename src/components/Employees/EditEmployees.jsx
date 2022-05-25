@@ -120,6 +120,7 @@ const EditEmployees = () => {
       handleOnChangeSelect={handleOnChangeSelect}
       textBtn='save'
       titleForm='Edit Employee'
+      disableBtn={true}
     />
 
   )
