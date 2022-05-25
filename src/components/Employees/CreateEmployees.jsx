@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Form } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import EmployeesForm from '../Form/EmployeesForm';
-import Notification from '../common/Notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   employeesSelector, 
@@ -15,18 +14,19 @@ import { languagesThunk } from '../../store/slices/languagesSlice';
 import { frameWorksThunk } from '../../store/slices/frameworksSlice';
 import { employeeCreateThunk } from '../../store/slices/employeesSlice';
 import getBase64 from '../../helpers/base64';
+import Notification from '../common/Notification';
+import { ApiStatusCodes } from '../../constants/api.constants';
 
 const CreateEmployees = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm()
 
-  const { isLoading, status } = useSelector(employeesSelector);
+  const { isLoading } = useSelector(employeesSelector);
   const { positions } = useSelector(positionsSelector);
   const { languages } = useSelector(languagesSelector);
   const { frameWorks } = useSelector(frameWorksSelector);
   const [ selectedlanguage, setSelectedLanguage ] = useState(1);
-  const [ base64File, setBase64File ] = useState('');
 
   const initialValues= {
     avatar: [],
@@ -58,10 +58,15 @@ const CreateEmployees = () => {
 
   const onFinish = (values) => {
     getBase64(values.cv[0].originFileObj, (url) => {
-      console.log("values", values)
       const formatValues = {...values, cv: url}
-      console.log("formatValues", formatValues)
-      dispatch(employeeCreateThunk(formatValues));
+      const createEmployee = async () => {
+        const res = await dispatch(employeeCreateThunk(formatValues));
+        if(res.payload.status === ApiStatusCodes.CREATED) {
+          Notification("success", "Message Employee", "Create Employee Success!");
+          navigate("/dashboard/employees");
+        }
+      } 
+      createEmployee();
     })
   }
 

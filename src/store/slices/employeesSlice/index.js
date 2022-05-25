@@ -28,7 +28,7 @@ export const employeeGetItemThunk = createAsyncThunk("employees/getItem", async 
 export const employeeCreateThunk = createAsyncThunk("employees/create", async (params, thunkApi) => {
   try {
     const res = await apiEmployeesCreate(params);
-    return res.status;
+    return res;
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data);
   }
@@ -59,7 +59,6 @@ export const EmployeesSlice = createSlice({
     employees: [],
     employee: {},
     error: null,
-    status: null
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -99,9 +98,8 @@ export const EmployeesSlice = createSlice({
       state.isLoading = true;
     })
 
-    .addCase(employeeCreateThunk.fulfilled, (state, action) => {
+    .addCase(employeeCreateThunk.fulfilled, (state) => {
       state.isLoading = false;
-      state.status = action.payload;
     })
 
     .addCase(employeeCreateThunk.rejected, (state, action) => {

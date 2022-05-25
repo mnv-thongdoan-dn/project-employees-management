@@ -33,9 +33,10 @@ const TableEmployees = () => {
 
   const handleOk = () => {
     const deleteEmployee = async () => {
-      const result = await dispatch(employeeDeleteThunk(employeeSelected))
+      const result = await dispatch(employeeDeleteThunk(employeeSelected));
+      console.log(result)
       if(result.meta.requestStatus === "fulfilled") {
-        Notification('success', "employee message", "Delete employee success !")
+        Notification('success', "message employee", "Delete employee success !")
       }
     }
     deleteEmployee();
