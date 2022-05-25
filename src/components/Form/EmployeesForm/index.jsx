@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Select, Radio, Button, InputNumber, message, Upload } from 'antd';
 import { 
-  FileImageOutlined, 
   UserOutlined, 
   NumberOutlined, 
   MailOutlined, 
@@ -37,7 +36,6 @@ const EmployeesForm = (props) => {
       } = props;
 
   const handleChangeUploadImage = (info) => {
-    console.log('info', info)
     const isJpgOrPng = info.file.type === 'image/jpeg' || info.file.type === 'image/png';
     const isLt2M = info.file.size / 1024 / 1024 < 2;
 

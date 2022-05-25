@@ -46,7 +46,7 @@ export const employeeDeleteThunk = createAsyncThunk("employees/delete", async (p
 export const employeeUpdateThunk = createAsyncThunk("employees/update", async (params, thunkApi) => {
   try {
     const res = await apiEmployeesUpdate(params);
-    return res.status
+    return res
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data);
   }
@@ -126,9 +126,8 @@ export const EmployeesSlice = createSlice({
       state.isLoading = true;
     })
 
-    .addCase(employeeUpdateThunk.fulfilled, (state, action) => {
+    .addCase(employeeUpdateThunk.fulfilled, (state) => {
       state.isLoading = false;
-      state.status = action.payload;
     })
 
     .addCase(employeeUpdateThunk.rejected, (state, action) => {

@@ -7,6 +7,7 @@ import { EditOutlined, DeleteOutlined, FundViewOutlined } from '@ant-design/icon
 import Confirm from '../../common/Modal/Confirm';
 import Notification from '../../common/Notification';
 import { employeesSelector } from '../../../store/selectors';
+import getBase64 from '../../../helpers/base64';
 
 const TableEmployees = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,6 @@ const TableEmployees = () => {
   const handleOk = () => {
     const deleteEmployee = async () => {
       const result = await dispatch(employeeDeleteThunk(employeeSelected));
-      console.log(result)
       if(result.meta.requestStatus === "fulfilled") {
         Notification('success', "message employee", "Delete employee success !")
       }
@@ -76,7 +76,7 @@ const TableEmployees = () => {
     },
     {
       title: 'Full Name',
-      width: 100,
+      width: 150,
       dataIndex: 'name',
       key: 'name',
       render: (_) => <a>{_}</a>
@@ -179,9 +179,9 @@ const TableEmployees = () => {
       dataIndex: 'cv',
       key: 'cv',
       width: 150,
-      render: (record) => (
-        <a href={record} target="_blank" className='btn btn-viewcv'><FundViewOutlined/></a>
-      )
+      render: (record) => {
+        return <a href={record[0].base64} target="_blank" className='btn btn-viewcv'><FundViewOutlined/></a>
+      }
     },
     {
       title: 'Action',

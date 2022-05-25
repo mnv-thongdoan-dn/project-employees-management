@@ -58,7 +58,8 @@ const CreateEmployees = () => {
 
   const onFinish = (values) => {
     getBase64(values.cv[0].originFileObj, (url) => {
-      const formatValues = {...values, cv: url}
+      const infoFilePdf = {...values.cv[0], base64: url};
+      const formatValues = {...values, cv: [infoFilePdf]};
       const createEmployee = async () => {
         const res = await dispatch(employeeCreateThunk(formatValues));
         if(res.payload.status === ApiStatusCodes.CREATED) {

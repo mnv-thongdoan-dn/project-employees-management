@@ -14,6 +14,7 @@ import { positionsThunk } from '../../store/slices/positionsSlice';
 import { languagesThunk } from '../../store/slices/languagesSlice';
 import { frameWorksThunk } from '../../store/slices/frameworksSlice';
 import { employeeGetItemThunk, employeeUpdateThunk } from '../../store/slices/employeesSlice';
+import getBase64 from '../../helpers/base64';
 
 const EditEmployees = () => {
   const dispatch = useDispatch();
@@ -21,12 +22,11 @@ const EditEmployees = () => {
   const params = useParams();
   const [form] = Form.useForm()
 
-  const { isLoading, status, employee } = useSelector(employeesSelector);
+  const { isLoading, employee } = useSelector(employeesSelector);
   const { positions } = useSelector(positionsSelector);
   const { languages } = useSelector(languagesSelector);
   const { frameWorks } = useSelector(frameWorksSelector);
   const [ selectedlanguage, setSelectedLanguage ] = useState('');
-  const [ avatar, setAvatar ] = useState('');
 
   useEffect(() => {
     dispatch(positionsThunk());
@@ -71,29 +71,37 @@ const EditEmployees = () => {
     }
   }, [selectedlanguage])
 
-  useEffect(() => {
-    if(status === 200) {
-      Notification('success', "Employees Message", "Edit Employees Success!")
-      navigate("/dashboard/employees");
-    }
-  }, [status])
-
   const handleOnChangeSelect = (value) => {
     setSelectedLanguage(value);
     form.setFieldsValue({frameWorks: []});
   }
 
-  const getImage = (url) => {
-    setAvatar(url)
+  const updatetEmployee = async (datas) => {
+    const result = await dispatch(employeeUpdateThunk(datas));
+    if(result.meta.requestStatus === "fulfilled") {
+      Notification("success", "Message Employee", "Update Employee Success!");
+      navigate("/dashboard/employees");
+    }
   }
 
   const onFinish = (values) => {
-    const formatValues = {...values, avatar}
-    const datas = {
-      idEmployee: params.id,
-      dataEmployee: formatValues
+    if(values.cv[0].originFileObj.name) {
+      getBase64(values.cv[0].originFileObj, (url) => {
+        const infoFilePdf = {...values.cv[0], base64: url};
+        const formatValues = {...values, cv: [infoFilePdf]};
+        const datas = {
+          idEmployee: params.id,
+          dataEmployee: formatValues
+        }
+        updatetEmployee(datas);
+      })
+    } else{
+      const datas = {
+        idEmployee: params.id,
+        dataEmployee: values
+      }
+      updatetEmployee(datas);
     }
-    dispatch(employeeUpdateThunk(datas));
   }
 
   return (
@@ -112,7 +120,6 @@ const EditEmployees = () => {
       handleOnChangeSelect={handleOnChangeSelect}
       textBtn='save'
       titleForm='Edit Employee'
-      getImage={getImage}
     />
 
   )
