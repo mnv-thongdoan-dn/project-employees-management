@@ -7,7 +7,6 @@ import { EditOutlined, DeleteOutlined, FundViewOutlined } from '@ant-design/icon
 import Confirm from '../../common/Modal/Confirm';
 import Notification from '../../common/Notification';
 import { employeesSelector } from '../../../store/selectors';
-import getBase64 from '../../../helpers/base64';
 
 const TableEmployees = () => {
   const dispatch = useDispatch();
@@ -16,7 +15,7 @@ const TableEmployees = () => {
   const [ employeeSelected, setEmployeeSelected ] = useState('');
   const [ contentConfirm, setContentConfirm ] = useState('');
 
-  const [windowSize, setWindowSize] = useState(() => {
+  const [windowSize] = useState(() => {
     const { innerWidth: width} = window;
     return width;
   });
@@ -49,7 +48,7 @@ const TableEmployees = () => {
 
   useEffect(() => {
     dispatch(employeesGetListThunk());
-  }, []);
+  }, [dispatch]);
 
   const columns = [
     {
@@ -66,12 +65,7 @@ const TableEmployees = () => {
       key: 'avatar',
       fixed: windowSize >= 992 ? 'left' : '',
       render: (avatar) => {
-        const urlAvatar = avatar[0].thumbUrl;
-        if(urlAvatar) {
-        return  <img src={urlAvatar} alt='image'/>
-        } else{
-          return <img src={avatar} alt='image'/>
-        }
+        return  <img src={avatar[0].thumbUrl} alt='avatar employee'/>
       }
     },
     {
@@ -79,7 +73,7 @@ const TableEmployees = () => {
       width: 150,
       dataIndex: 'name',
       key: 'name',
-      render: (_) => <a>{_}</a>
+      render: (_) => <a href='username'>{_}</a>
     },
     {
       title: 'Age',
@@ -110,24 +104,14 @@ const TableEmployees = () => {
           switch (language) {
             case 1:
               return "Php"
-              break;
-
             case 2:
               return "Ruby"
-              break;
-
             case 3:
               return "Javascript"
-              break;
-
             case 4:
               return "Java"
-              break;
-
             case 5:
               return "Python"
-              break;
-
             default:
               break;
           }
@@ -180,7 +164,7 @@ const TableEmployees = () => {
       key: 'cv',
       width: 150,
       render: (record) => {
-        return <a href={record[0].base64} target="_blank" className='btn btn-viewcv'><FundViewOutlined/></a>
+        return <a rel="noreferrer" href={record[0].base64} target="_blank" className='btn btn-viewcv'><FundViewOutlined/></a>
       }
     },
     {
@@ -190,7 +174,7 @@ const TableEmployees = () => {
       width: 200,
       render: (record) => (
         <div className='group-btn'>
-          <Link to={`edit/${record.id}`} className='btn btn-edit'><EditOutlined/></Link>
+          <Link to='edit' state={record.id} className='btn btn-edit'><EditOutlined/></Link>
           <Button onClick={() => handleDelete(record)} className='btn btn-delete'><DeleteOutlined/></Button>
         </div>
       )

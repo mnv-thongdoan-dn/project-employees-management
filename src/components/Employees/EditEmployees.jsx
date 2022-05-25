@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form } from 'antd';
 import EmployeesForm from '../Form/EmployeesForm';
 import Notification from '../common/Notification';
@@ -19,7 +19,8 @@ import getBase64 from '../../helpers/base64';
 const EditEmployees = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const params = useParams();
+  const location = useLocation();
+  const idUser = location.state;
   const [form] = Form.useForm()
 
   const { isLoading, employee } = useSelector(employeesSelector);
@@ -31,8 +32,8 @@ const EditEmployees = () => {
   useEffect(() => {
     dispatch(positionsThunk());
     dispatch(languagesThunk());
-    dispatch(employeeGetItemThunk(params.id));
-  }, [])
+    dispatch(employeeGetItemThunk(idUser));
+  }, [dispatch, idUser])
 
   useEffect(() => {
     form.setFieldsValue(employee);
@@ -40,36 +41,26 @@ const EditEmployees = () => {
       switch (data) {
         case "Php":
           return 1
-          break;
-  
         case "Ruby":
           return 2
-          break;
-  
         case "Javascript":
           return 3
-          break;
-  
         case "Java":
           return 4
-          break;
-  
         case "Python":
           return 5
-          break;
-  
         default:
           break;
       }
     }
     setSelectedLanguage(convertLanguageId(employee.language));
-  }, [form, employee])
+  }, [form, employee, selectedlanguage])
 
   useEffect(() => {
     if(selectedlanguage) {
       dispatch(frameWorksThunk(selectedlanguage));
     }
-  }, [selectedlanguage])
+  }, [selectedlanguage, dispatch])
 
   const handleOnChangeSelect = (value) => {
     setSelectedLanguage(value);
@@ -90,14 +81,14 @@ const EditEmployees = () => {
         const infoFilePdf = {...values.cv[0], base64: url};
         const formatValues = {...values, cv: [infoFilePdf]};
         const datas = {
-          idEmployee: params.id,
+          idEmployee: idUser,
           dataEmployee: formatValues
         }
         updatetEmployee(datas);
       })
     } else{
       const datas = {
-        idEmployee: params.id,
+        idEmployee: idUser,
         dataEmployee: values
       }
       updatetEmployee(datas);

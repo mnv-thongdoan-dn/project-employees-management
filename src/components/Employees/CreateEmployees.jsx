@@ -45,11 +45,11 @@ const CreateEmployees = () => {
   useEffect(() => {
     dispatch(positionsThunk());
     dispatch(languagesThunk());
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(frameWorksThunk(selectedlanguage));
-  }, [selectedlanguage])
+  }, [selectedlanguage, dispatch])
 
   const handleOnChangeSelect = (value) => {
     setSelectedLanguage(value);

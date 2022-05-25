@@ -7,7 +7,7 @@ import {
   apiEmployeeGetItem
 } from '../../../api/employees/employees.api';
 
-export const employeesGetListThunk = createAsyncThunk("employees/getAll", async (params, thunkApi) => {
+export const employeesGetListThunk = createAsyncThunk("employees/getAll", async (thunkApi) => {
   try {
     const res = await apiEmployeesGetList();
       return res.data;
@@ -38,6 +38,7 @@ export const employeeDeleteThunk = createAsyncThunk("employees/delete", async (p
   try {
     const res = await apiEmployeesDelete(params);
     thunkApi.dispatch(employeesGetListThunk())
+    return res;
   } catch (error) {
     return thunkApi.rejectWithValue(error.response.data);
   }

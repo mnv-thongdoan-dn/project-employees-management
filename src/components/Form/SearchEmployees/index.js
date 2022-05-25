@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input, Select, Button, Row, Col } from 'antd';
-import { DownOutlined, UpOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { DownOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
 import { positionsThunk } from '../../../store/slices/positionsSlice';
 import { languagesThunk } from '../../../store/slices/languagesSlice';
 import { frameWorksThunk } from '../../../store/slices/frameworksSlice';
@@ -26,13 +25,13 @@ const SearchEmployees = () => {
   useEffect(() => {
     dispatch(positionsThunk());
     dispatch(languagesThunk());
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if(selectedlanguage) {
       dispatch(frameWorksThunk(selectedlanguage));
     }
-  }, [selectedlanguage])
+  }, [selectedlanguage, dispatch])
 
   const handleOnChangeSelect = (value) => {
     console.log("values", value)
