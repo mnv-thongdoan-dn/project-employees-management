@@ -234,6 +234,54 @@ label {
         @include pxRem(height, 42px);
       }
 
+      .group-btn {
+        @include pxRem(height, 150px);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        button {
+          @include pxRem(margin, 0px);
+        }
+
+        button:not(button:last-child) {
+          order: 2;
+        }
+
+        .btn-toggle {
+          border: none;
+          color: map-get($colors, secondary);
+
+          &:hover, &:active, &:focus {
+            &::after {
+              display: none;
+            }
+          }
+        }
+
+        .btn-third {
+          background-color: map-get($colors, bg-gray);
+          color: map-get($colors, black);
+          border: 1px solid map-get($colors, bg-gray);
+
+          &:hover, &:active {
+            background-color: map-get($colors, white);
+          }
+        }
+      }
+
+      .btn {
+        @include pxRem(width, 160px);
+        @include pxRem(font-size, 14px);
+        @include pxRem(padding, 5px 12px);
+        @include pxRem(border-radius, 6px);
+      }
+    
+      .ant-input {
+        @include pxRem(font-size, 16px);
+      }
+
       label {
         font-weight: map-get($font-weight, medium);
       }
@@ -244,15 +292,15 @@ label {
     }
   }
 
-  .btn {
-    @include pxRem(width, 160px);
-    @include pxRem(font-size, 14px);
-    @include pxRem(padding, 5px 12px);
-    @include pxRem(border-radius, 6px);
-  }
-
-  .ant-input {
-    @include pxRem(font-size, 16px);
+  @include respond-above(small){
+    .ant-col {
+      .search-form {
+        .ant-row.ant-form-item.wrapper-group-btn {
+          justify-content: flex-end;
+          width: 100%;
+        }
+      }
+    }
   }
 
   @include respond-above(medium){
@@ -269,12 +317,39 @@ label {
   }
 
   @include respond-above(wide){
-    flex-direction: row;
-    align-items: flex-start;
 
-    .btn {
-      @include pxRem(height, 50px);
+    .ant-col {
+      .search-form {
+        .group-btn {
+          height: 100%;
+          flex-direction: row;
+          align-items: flex-start;
+          justify-content: flex-end;
+
+          button {
+            @include pxRem(width, 100px)
+          }
+
+          button:first-child {
+            @include pxRem(margin-right, 10px);
+          }
+          
+          button:last-child{
+            @include pxRem(height, 40px);
+            order: 3;
+          }
+          // button:not(button:last-child) {
+          //   order: 1;
+          // }
+        }
+      }
     }
+    // flex-direction: row;
+    // align-items: flex-start;
+
+    // .btn {
+    //   // @include pxRem(height, 50px);
+    // }
   }
 }
 

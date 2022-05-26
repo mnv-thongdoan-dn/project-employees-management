@@ -20,3 +20,7 @@ export const apiEmployeesDelete = (id) => {
 export const apiEmployeesUpdate = (datas) => {
   return api.patch(`${ENDPOINTS.employees}/${datas.idEmployee}`, datas.dataEmployee);
 };
+
+export const apiEmployeesSearch = (params) => {
+  return api.get(`${ENDPOINTS.employees}?name_like=${params.name || ''}&position_like=${params.position || ''}&language_like=${params.language || ''}&frameWorks_like=${params.frameWorks[0] || ''}`);
+};

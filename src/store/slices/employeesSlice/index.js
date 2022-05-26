@@ -4,7 +4,8 @@ import {
   apiEmployeesCreate, 
   apiEmployeesDelete,
   apiEmployeesUpdate,
-  apiEmployeeGetItem
+  apiEmployeeGetItem,
+  apiEmployeesSearch
 } from '../../../api/employees/employees.api';
 
 export const employeesGetListThunk = createAsyncThunk("employees/getAll", async (thunkApi) => {
@@ -53,10 +54,20 @@ export const employeeUpdateThunk = createAsyncThunk("employees/update", async (p
   }
 }) ;
 
+export const employeeSearchThunk = createAsyncThunk("employees/search", async (params, thunkApi) => {
+  try {
+    const res = await apiEmployeesSearch(params);
+    return res.data
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.response.data);
+  }
+}) ;
+
 export const EmployeesSlice = createSlice({
   name: 'employees',
   initialState: {
     isLoading: false,
+    isLoadingSearch: false,
     employees: [],
     employee: {},
     error: null,
@@ -132,6 +143,25 @@ export const EmployeesSlice = createSlice({
     })
 
     .addCase(employeeUpdateThunk.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error
+    })
+
+    //  search
+    .addCase(employeeSearchThunk.pending, (state) => {
+      state.isLoadingSearch = true;
+      state.isLoading = true;
+    })
+
+    .addCase(employeeSearchThunk.fulfilled, (state, action) => {
+      state.isLoadingSearch = false;
+      state.isLoading = false;
+      console.log(action.payload)
+      state.employees = action.payload;
+    })
+
+    .addCase(employeeSearchThunk.rejected, (state, action) => {
+      state.isLoadingSearch = false;
       state.isLoading = false;
       state.error = action.error
     })
