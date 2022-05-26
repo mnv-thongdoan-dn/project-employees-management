@@ -47,6 +47,9 @@ const SearchEmployees = () => {
 
   const onFinish = (values) => {
     const { name, position, language, frameWorks } = values;
+    if( !name && !position && !language && !frameWorks) {
+      return;
+    }
     setParamsSearch({
       name_like: name || '',
       position_like: position || '',
