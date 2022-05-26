@@ -58,13 +58,15 @@ const EmployeesForm = (props) => {
 
   const handleChangeUploadFile = (info) => {
     const isJpgOrPng = info.file.type === 'application/pdf';
-    if(isJpgOrPng) {
+    const isLt2M = info.file.size / 1024 / 1024 < 2;
+    if(isJpgOrPng && isLt2M) {
       info.file.status = 'done';
       info.fileList.length > 0 ? setDisableUpFile(true) : setDisableUpFile(false);
       return info?.fileList;
-    } else{
+    } else if(!isJpgOrPng) {
       message.error('You can only upload PDF file!');
-      return;
+    } else if(!isLt2M) {
+      message.error('Image must smaller than 2MB!');
     }
   }
 

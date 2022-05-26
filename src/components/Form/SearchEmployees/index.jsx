@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Form, Input, Select, Button, Row, Col } from 'antd';
 import { DownOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
 import { positionsThunk } from '../../../store/slices/positionsSlice';
@@ -19,7 +19,6 @@ const { Option } = Select;
 const SearchEmployees = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const navigate = useNavigate()
   const { positions } = useSelector(positionsSelector);
   const { isLoadingSearch } = useSelector(employeesSelector);
   const { languages } = useSelector(languagesSelector);
@@ -31,8 +30,7 @@ const SearchEmployees = () => {
   useEffect(() => {
     dispatch(positionsThunk());
     dispatch(languagesThunk());
-    navigate('/dashboard/employees')
-  }, [dispatch, navigate])
+  }, [dispatch])
 
   useEffect(() => {
     if(selectedlanguage) {
