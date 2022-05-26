@@ -22,5 +22,5 @@ export const apiEmployeesUpdate = (datas) => {
 };
 
 export const apiEmployeesSearch = (params) => {
-  return api.get(`${ENDPOINTS.employees}?name_like=${params.name || ''}&position_like=${params.position || ''}&language_like=${params.language || ''}&frameWorks_like=${params.frameWorks[0] || ''}`);
+  return api.get(`${ENDPOINTS.employees}?name_like=${params.name || ''}&position_like=${params.position || ''}&language_like=${params.language || ''}&frameWorks_like=${params.frameWorks || ''}`);
 };

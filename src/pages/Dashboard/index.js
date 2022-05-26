@@ -31,17 +31,25 @@ const Dashboard = () => {
           <Menu
             mode="inline"
             defaultSelectedKeys={[location.pathname]}
+            items={[
+              {
+                className: "sidebar-item",
+                key: "/dashboard",
+                icon: <AreaChartOutlined />,
+                label: (
+                  <Link to='/dashboard'>Chart</Link>
+                ),
+              },
+              {
+                className: "sidebar-item",
+                key: "/dashboard/employees",
+                icon: <UserAddOutlined />,
+                label: (
+                  <Link to='/dashboard/employees'>Employees</Link>
+                ),
+              },
+            ]}
           >
-            <Menu.Item key='/dashboard'>
-              <AreaChartOutlined />
-              <span>Chart </span>
-              <Link to='/dashboard' />
-            </Menu.Item>
-            <Menu.Item key='/dashboard/employees'>
-              <UserAddOutlined />
-              <span>Employees </span>
-              <Link to='/dashboard/employees' />
-            </Menu.Item>
           </Menu>
         </Sider>
         <Layout>

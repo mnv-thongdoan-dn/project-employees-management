@@ -13,6 +13,9 @@ const store = configureStore({
     languages: languagesSlice,
     frameWorks: frameworksSlice
   },
+  middleware: (getDefaultMiddleware) =>  getDefaultMiddleware({
+    serializableCheck: false,
+  })
 });
 
 export default store;

@@ -37,24 +37,7 @@ const EditEmployees = () => {
 
   useEffect(() => {
     form.setFieldsValue(employee);
-    const convertLanguageId = (data = selectedlanguage) => {
-      switch (data) {
-        case "Php":
-          return 1
-        case "Ruby":
-          return 2
-        case "Javascript":
-          return 3
-        case "Java":
-          return 4
-        case "Python":
-          return 5
-        default:
-          break;
-      }
-    }
-    setSelectedLanguage(convertLanguageId(employee.language));
-  }, [form, employee, selectedlanguage])
+  }, [employee, form])
 
   useEffect(() => {
     if(selectedlanguage) {
@@ -102,7 +85,6 @@ const EditEmployees = () => {
       className='create-employee-form'
       labelCol={{ span: 24}}
       wrapperCol={{ span: 24 }}
-      initialValues={ employee }
       onFinish={onFinish}
       languages={languages}
       positions={positions}

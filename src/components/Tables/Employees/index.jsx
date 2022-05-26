@@ -36,6 +36,7 @@ const TableEmployees = () => {
       const result = await dispatch(employeeDeleteThunk(employeeSelected));
       if(result.meta.requestStatus === "fulfilled") {
         Notification('success', "message employee", "Delete employee success !")
+        dispatch(employeesGetListThunk());
       }
     }
     deleteEmployee();
@@ -70,7 +71,7 @@ const TableEmployees = () => {
     },
     {
       title: 'Full Name',
-      width: 150,
+      width: 200,
       dataIndex: 'name',
       key: 'name',
       render: (_) => <a href='username'>{_}</a>
@@ -86,7 +87,7 @@ const TableEmployees = () => {
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender',
-      width: 150
+      width: 100
     },
     {
       title: 'Position',
@@ -123,7 +124,7 @@ const TableEmployees = () => {
       title: 'FrameWorks',
       dataIndex: 'frameWorks',
       key: 'frameWorks',
-      width: 150,
+      width: 200,
       render: frameWorks => (
         <>
           {frameWorks.map(frameWork => {
@@ -144,7 +145,7 @@ const TableEmployees = () => {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      width: 150
+      width: 250
     },
     {
       title: 'PhoneNumber',

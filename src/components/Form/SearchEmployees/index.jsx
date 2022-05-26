@@ -46,13 +46,12 @@ const SearchEmployees = () => {
   }
 
   const onFinish = (values) => {
-    console.log(values)
     const { name, position, language, frameWorks } = values;
     setParamsSearch({
       name_like: name || '',
       position_like: position || '',
       language_like: language || '',
-      frameWorks_like: frameWorks[0] || ''
+      frameWorks_like: frameWorks || ''
     })
     dispatch(employeeSearchThunk(values));
   };
