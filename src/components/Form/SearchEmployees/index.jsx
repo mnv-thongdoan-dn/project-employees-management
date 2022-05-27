@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Form, Input, Select, Button, Row, Col } from 'antd';
 import { DownOutlined, UpOutlined, UserOutlined } from '@ant-design/icons';
 import { positionsThunk } from '../../../store/slices/positionsSlice';
@@ -19,6 +19,7 @@ const { Option } = Select;
 const SearchEmployees = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const { positions } = useSelector(positionsSelector);
   const { isLoadingSearch } = useSelector(employeesSelector);
   const { languages } = useSelector(languagesSelector);
@@ -30,7 +31,8 @@ const SearchEmployees = () => {
   useEffect(() => {
     dispatch(positionsThunk());
     dispatch(languagesThunk());
-  }, [dispatch])
+    navigate('/dashboard/employees')
+  }, [dispatch, navigate])
 
   useEffect(() => {
     if(selectedlanguage) {
@@ -43,15 +45,24 @@ const SearchEmployees = () => {
     form.setFieldsValue({frameWorks: []});
   }
 
+  const checkNullParams = (params) => {
+    let valueParams = {};
+     for(let key in params) {
+       if(key === 'frameWorks' && !params[key].hasOwnProperty(0)) { 
+         key = null;
+       } else if(!params[key]) {
+        key = null;
+       } else {
+        valueParams[key] = params[key];
+       }
+    }
+    return valueParams;
+  }
+
   const onFinish = (values) => {
-    const { name, position, language, frameWorks } = values;
-    setParamsSearch({
-      name_like: name || '',
-      position_like: position || '',
-      language_like: language || '',
-      frameWorks_like: frameWorks || ''
-    })
-    dispatch(employeeSearchThunk(values));
+    const paramsSearch = checkNullParams(values);
+    setParamsSearch(paramsSearch);
+    dispatch(employeeSearchThunk(paramsSearch));
   };
 
   const onReset = () => {
